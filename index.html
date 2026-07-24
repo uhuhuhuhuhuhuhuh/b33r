@@ -24,13 +24,16 @@
         <span class="brand-mark" aria-hidden="true">▶</span>
         <span>STREAMDECK <em>IPTV</em></span>
       </a>
-      <a class="header-link" href="#install">Install guide</a>
+      <nav class="header-nav" aria-label="Primary navigation">
+        <a class="header-link" href="#install">Install guide</a>
+        <a class="header-link" href="#versions">Version history</a>
+      </nav>
     </header>
 
     <main id="main">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Version 1.3 available</p>
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Version <span data-latest-version>1.8.0</span> available</p>
           <h1 id="hero-title">Everything you watch.<br><span>One screen.</span></h1>
           <p class="lede">
             Live channels, movies, and series in a fast, cinematic player built
@@ -40,8 +43,9 @@
           <div class="primary-actions">
             <a
               class="download-button"
-              href="./app.apk"
-              download="StreamDeck-IPTV-1.3.apk"
+              href="https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.8.0/StreamDeck-IPTV-1.8.0.apk"
+              download="StreamDeck-IPTV-1.8.0.apk"
+              data-latest-download
               aria-describedby="download-note"
             >
               <span class="android-icon" aria-hidden="true">↓</span>
@@ -50,7 +54,7 @@
                 <small>Phone, tablet &amp; Android TV</small>
               </span>
             </a>
-            <p id="download-note">Version 1.3.0 <span aria-hidden="true">·</span> 22.01 MB</p>
+            <p id="download-note">Version <span data-latest-version>1.8.0</span> <span aria-hidden="true">·</span> <span data-latest-size>90.80 MB</span></p>
           </div>
 
           <div class="trust-row" aria-label="Download assurances">
@@ -64,7 +68,7 @@
           <div class="release-card-top">
             <div>
               <p class="card-label">Current release</p>
-              <h2 id="release-title">Version 1.3.0</h2>
+              <h2 id="release-title">Version <span data-latest-version>1.8.0</span></h2>
             </div>
             <span class="release-badge">Stable</span>
           </div>
@@ -72,11 +76,11 @@
           <dl class="release-meta">
             <div>
               <dt>Released</dt>
-              <dd>July 24, 2026</dd>
+              <dd data-latest-date>July 24, 2026</dd>
             </div>
             <div>
               <dt>File size</dt>
-              <dd>22.01 MB</dd>
+              <dd data-latest-size>90.80 MB</dd>
             </div>
             <div>
               <dt>Minimum Android</dt>
@@ -93,7 +97,7 @@
           <div class="checksum">
             <div>
               <p class="card-label">SHA-256 checksum</p>
-              <code id="checksum-value">09DD0A2C18477DF6DCE3B9286F2DD6AF2489D3A33162418E361C3AB6793B9CE1</code>
+              <code id="checksum-value">FF95B12C87A7AE47561F67AA4E5A3653A1AD4608050E12D44457C5F128253FDA</code>
             </div>
             <button class="copy-button" type="button" data-copy-checksum aria-label="Copy SHA-256 checksum">
               Copy
@@ -145,14 +149,42 @@
           <h2 id="tv-title">Using the Downloader app?</h2>
           <p>
             Enter your short custom domain in Downloader, then select the large
-            download button with your remote. You can also enter the direct APK
-            address to start the download immediately.
+            download button with your remote. The page always points to the
+            newest published release.
           </p>
           <a class="tv-link" href="./tv.html">Open the remote-friendly page →</a>
         </div>
         <div class="direct-url">
           <span>Direct address</span>
-          <code>download.b33r.top/app.apk</code>
+          <code>download.b33r.top</code>
+        </div>
+      </section>
+
+      <section class="history-section" id="versions" aria-labelledby="versions-title">
+        <div class="section-intro history-intro">
+          <p class="eyebrow">Release archive</p>
+          <h2 id="versions-title">Version history</h2>
+          <p>
+            The newest stable build is highlighted first. Release information is
+            loaded from the same version manifest used by the app’s automatic updater.
+          </p>
+        </div>
+        <div class="version-list" data-version-history aria-live="polite">
+          <article class="version-entry version-current">
+            <div class="version-heading">
+              <div>
+                <p class="card-label">Latest stable release</p>
+                <h3>Version 1.8.0</h3>
+              </div>
+              <span class="release-badge">Latest</span>
+            </div>
+            <p class="version-date">July 24, 2026</p>
+            <ul>
+              <li>Secure in-app update checks, downloads, checksum verification, and installer handoff.</li>
+              <li>Automatic playback-engine fallbacks with audio and subtitle track controls.</li>
+            </ul>
+            <a class="version-download" href="https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.8.0/StreamDeck-IPTV-1.8.0.apk">Download 1.8.0</a>
+          </article>
         </div>
       </section>
 
