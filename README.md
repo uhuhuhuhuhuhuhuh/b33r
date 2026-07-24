@@ -22,13 +22,13 @@ Pages repository.
 Windows PowerShell:
 
 ```powershell
-Get-FileHash .\StreamDeck-IPTV-1.9.0.apk -Algorithm SHA256
+Get-FileHash .\StreamDeck-IPTV-1.9.1.apk -Algorithm SHA256
 ```
 
 macOS or Linux:
 
 ```sh
-shasum -a 256 StreamDeck-IPTV-1.9.0.apk
+shasum -a 256 StreamDeck-IPTV-1.9.1.apk
 ```
 
 ## Publish with GitHub Pages
