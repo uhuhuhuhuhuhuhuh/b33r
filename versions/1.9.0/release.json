@@ -1,5 +1,4 @@
 {
-  "schemaVersion": 1,
   "versionCode": 11,
   "versionName": "1.9.0",
   "releaseDate": "2026-07-24",
@@ -8,9 +7,9 @@
   "sha256": "df7024803293a812289d2fe9e51ca972a04ff500d30283af56144979d2138a0d",
   "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.9.0/StreamDeck-IPTV-1.9.0.apk",
   "notes": [
-    "Live TV controls display a clear LIVE status instead of seek controls.",
+    "Live TV controls show LIVE and omit VOD seek controls.",
     "Playback controls hide automatically after five seconds and return on touch, keyboard, or remote input.",
-    "Movies, series, and episodes include 10-second rewind and 30-second forward controls.",
-    "Retains the playback crash fix, automatic fallback players, and audio/subtitle track selection."
+    "Movies, series, and episodes add 10-second rewind and 30-second forward controls.",
+    "Retains automatic fallback players plus audio and subtitle track selection."
   ]
 }
