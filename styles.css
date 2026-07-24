@@ -1,16 +1,19 @@
 :root {
-  --ink: #f1f1f1;
-  --muted: #b8b8b8;
-  --paper: #080808;
+  --ink: #fff7e8;
+  --muted: #d8c09a;
+  --paper: #100804;
   --white: #ffffff;
-  --line: #2a2a2a;
-  --accent: #49d6c8;
-  --accent-dark: #49d6c8;
-  --navy: #080808;
-  --blue: #8ecfdb;
+  --line: #3f2610;
+  --accent: #f2a52b;
+  --accent-dark: #f2a52b;
+  --navy: #100804;
+  --blue: #8dba4d;
+  --foam: #fff7e8;
+  --malt: #2a1608;
+  --stout: #080301;
   --radius-lg: 30px;
   --radius-md: 18px;
-  --shadow: 0 26px 70px rgba(17, 24, 39, 0.12);
+  --shadow: 0 26px 70px rgba(0, 0, 0, 0.28);
 }
 
 * {
@@ -76,7 +79,7 @@ a {
 }
 
 .brand em {
-  color: var(--accent);
+  color: var(--foam);
   font-style: normal;
 }
 
@@ -85,11 +88,11 @@ a {
   height: 34px;
   display: grid;
   place-items: center;
-  color: var(--navy);
+  color: var(--stout);
   background: var(--accent);
   border: 2px solid var(--accent);
-  border-radius: 10px 10px 10px 3px;
-  font-size: 0.9rem;
+  border-radius: 10px 10px 10px 4px;
+  font-size: 0.62rem;
   font-weight: 900;
 }
 
@@ -120,10 +123,11 @@ a {
   gap: clamp(40px, 7vw, 90px);
   color: var(--white);
   background:
-    radial-gradient(circle at 85% 10%, rgba(73, 214, 200, 0.18), transparent 31%),
-    radial-gradient(circle at 8% 88%, rgba(142, 207, 219, 0.12), transparent 26%),
+    radial-gradient(circle at 86% 12%, rgba(242, 165, 43, 0.24), transparent 31%),
+    radial-gradient(circle at 10% 88%, rgba(141, 186, 77, 0.13), transparent 26%),
+    linear-gradient(145deg, #2a1608 0%, #120804 62%, #080301 100%),
     var(--navy);
-  border: 1px solid #242424;
+  border: 1px solid #4a2a10;
   border-radius: var(--radius-lg);
 }
 
@@ -134,7 +138,7 @@ a {
   right: 45%;
   width: 160px;
   height: 160px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 232, 184, 0.14);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -183,13 +187,13 @@ h1 {
 }
 
 h1 span {
-  color: #686868;
+  color: var(--accent);
 }
 
 .lede {
   max-width: 620px;
   margin-bottom: 32px;
-  color: #b8b8b8;
+  color: #ead7b5;
   font-size: clamp(1rem, 1.5vw, 1.17rem);
 }
 
@@ -215,7 +219,7 @@ h1 span {
 }
 
 .download-button:hover {
-  background: #6fe8dc;
+  background: #ffc86a;
   transform: translateY(-2px);
 }
 
@@ -242,7 +246,7 @@ h1 span {
 
 .download-button small {
   margin-top: 1px;
-  color: #003733;
+  color: #3a1c00;
   font-size: 0.72rem;
 }
 
@@ -251,7 +255,7 @@ h1 span {
   height: 36px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(18, 24, 38, 0.2);
+  border: 1px solid rgba(58, 28, 0, 0.22);
   border-radius: 9px;
   font-size: 1.25rem;
   font-weight: 900;
@@ -259,7 +263,7 @@ h1 span {
 
 #download-note {
   margin: 0;
-  color: #aeb5c2;
+  color: #d8c09a;
   font-size: 0.76rem;
 }
 
@@ -268,15 +272,15 @@ h1 span {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 20px;
-  color: #aeb5c2;
+  color: #d8c09a;
   font-size: 0.72rem;
 }
 
 .release-card {
   padding: 30px;
   color: var(--ink);
-  background: rgba(17, 17, 17, 0.98);
-  border: 1px solid #2b2b2b;
+  background: rgba(26, 15, 8, 0.98);
+  border: 1px solid #4b2d12;
   border-radius: 24px;
   box-shadow: var(--shadow);
 }
@@ -307,7 +311,7 @@ h1 span {
 
 .release-badge {
   padding: 6px 10px;
-  color: #003733;
+  color: #3a1c00;
   background: var(--accent);
   border-radius: 999px;
   font-size: 0.68rem;
@@ -345,7 +349,7 @@ h1 span {
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  background: #242424;
+  background: #2a1608;
   border-radius: 12px;
 }
 
@@ -353,7 +357,7 @@ h1 span {
   width: min(235px, 50vw);
   display: block;
   overflow: hidden;
-  color: #d7d7d7;
+  color: var(--foam);
   font-size: 0.67rem;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -361,7 +365,7 @@ h1 span {
 
 .copy-button {
   padding: 8px 10px;
-  color: #003733;
+  color: #3a1c00;
   background: var(--accent);
   border: 0;
   border-radius: 8px;
@@ -392,7 +396,7 @@ h1 span {
   display: flex;
   align-items: flex-end;
   overflow: hidden;
-  border: 1px solid #333;
+  border: 1px solid #5c3918;
   border-radius: 9px;
 }
 
@@ -407,15 +411,15 @@ h1 span {
 }
 
 .poster-live {
-  background: linear-gradient(145deg, #143d3a 0%, #49d6c8 52%, #17304e 100%);
+  background: linear-gradient(145deg, #2a1608 0%, #f2a52b 52%, #8dba4d 100%);
 }
 
 .poster-movie {
-  background: linear-gradient(145deg, #4d1834 0%, #e05c8e 48%, #34276f 100%);
+  background: linear-gradient(145deg, #3a1809 0%, #d47b23 48%, #6c2f0e 100%);
 }
 
 .poster-series {
-  background: linear-gradient(145deg, #4c3211 0%, #e29b35 50%, #9d342e 100%);
+  background: linear-gradient(145deg, #1b2c0e 0%, #8dba4d 44%, #f2a52b 100%);
 }
 
 .install-section {
@@ -492,8 +496,8 @@ h1 span {
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  background: #111111;
-  border: 1px solid #242424;
+  background: #1a0f08;
+  border: 1px solid #3f2610;
   border-radius: 14px;
 }
 
@@ -503,7 +507,7 @@ h1 span {
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  color: #003733;
+  color: #3a1c00;
   background: var(--accent);
   border-radius: 50%;
   font-size: 0.75rem;
@@ -528,7 +532,7 @@ h1 span {
   grid-template-columns: 1fr 1fr;
   align-items: end;
   gap: 55px;
-  background: #111111;
+  background: #1a0f08;
   border: 1px solid var(--line);
   border-radius: 24px;
 }
@@ -550,14 +554,14 @@ h1 span {
 
 .version-entry {
   padding: 28px;
-  background: #111111;
+  background: #1a0f08;
   border: 1px solid var(--line);
   border-radius: 18px;
 }
 
 .version-entry.version-current {
-  border-color: rgba(73, 214, 200, 0.55);
-  box-shadow: 0 18px 55px rgba(73, 214, 200, 0.07);
+  border-color: rgba(242, 165, 43, 0.55);
+  box-shadow: 0 18px 55px rgba(242, 165, 43, 0.08);
 }
 
 .version-heading {
@@ -594,7 +598,7 @@ h1 span {
   margin-top: 20px;
   padding: 9px 13px;
   display: inline-block;
-  color: #003733;
+  color: #3a1c00;
   background: var(--accent);
   border-radius: 9px;
   font-size: 0.78rem;
@@ -604,7 +608,7 @@ h1 span {
 
 .version-download:hover,
 .version-download:focus-visible {
-  background: #6fe8dc;
+  background: #ffc86a;
 }
 
 .tv-section {
@@ -616,8 +620,8 @@ h1 span {
   align-items: center;
   gap: 28px;
   color: var(--white);
-  background: #111111;
-  border: 1px solid #242424;
+  background: #1a0f08;
+  border: 1px solid #3f2610;
   border-radius: 24px;
 }
 
@@ -626,7 +630,7 @@ h1 span {
   height: 66px;
   display: grid;
   place-items: center;
-  color: var(--navy);
+  color: #3a1c00;
   background: var(--accent);
   border-radius: 18px 18px 18px 5px;
   font-weight: 900;
@@ -646,7 +650,7 @@ h1 span {
 .tv-section p {
   max-width: 610px;
   margin-bottom: 11px;
-  color: #b8c0ce;
+  color: #d8c09a;
   font-size: 0.84rem;
 }
 
@@ -660,8 +664,8 @@ h1 span {
 .direct-url {
   min-width: 240px;
   padding: 15px 17px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 232, 184, 0.08);
+  border: 1px solid rgba(255, 232, 184, 0.14);
   border-radius: 12px;
 }
 
@@ -672,7 +676,7 @@ h1 span {
 
 .direct-url span {
   margin-bottom: 5px;
-  color: #939dab;
+  color: #c49a60;
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.08em;

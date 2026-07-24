@@ -1,7 +1,20 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.2",
+  "latest": "1.9.4",
   "releases": [
+    {
+      "versionCode": 18,
+      "versionName": "1.9.4",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 57954724,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.4/StreamDeck-IPTV-1.9.4.apk",
+      "notes": [
+        "Enforces Dispatcharr/XC account expiration across login, library access, and playback.",
+        "Treats blank or null expiration as never expiring.",
+        "Adds background account-expiration and app-update checks with notifications when allowed.",
+        "Adds a b33r-themed amber app UI, download web UI, launcher icon, and Fire TV banner."
+      ]
+    },
     {
       "versionCode": 16,
       "versionName": "1.9.2",

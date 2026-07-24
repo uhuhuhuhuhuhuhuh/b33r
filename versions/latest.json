@@ -1,19 +1,18 @@
 {
   "schemaVersion": 1,
-  "versionCode": 16,
-  "versionName": "1.9.2",
+  "versionCode": 18,
+  "versionName": "1.9.4",
   "releaseDate": "2026-07-24",
   "minimumAndroid": "5.0",
-  "sizeBytes": 57625998,
-  "sha256": "c3754f230136a202f912ea00149a39fc5fe4fd495d6c6b4062356a70f5bf196b",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.9.2/StreamDeck-IPTV-1.9.2.apk",
+  "sizeBytes": 57954724,
+  "sha256": "46393b854db845c3112191b6594614cf819ce3ffb3c6733c6fb4de07156413bf",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.4/StreamDeck-IPTV-1.9.4.apk",
   "notes": [
-    "Fire TV's system keyboard opens only after pressing OK on a login or search field.",
-    "Merely focusing a field with the D-pad no longer opens the keyboard.",
-    "The library header shows the signed-in username and expiration date, but playback remains uncluttered.",
-    "Adds a refined login and library design while retaining full-color artwork.",
-    "Adds a dedicated Fire TV home-screen icon and 320:180 launcher banner.",
-    "Adds Auto quality by default with 720p through 2160p and Max choices.",
-    "Fits video without stretching or cropping and retains Android 5.0 support, buffering, secure updates, and fallback players."
+    "Adds account-expiration enforcement for null, future, and expired Dispatcharr/XC accounts.",
+    "Blocks expired accounts from login, catalog access, and playback with a clear expired-account message.",
+    "Stores the last known expiration securely so saved sessions can expire cleanly later.",
+    "Adds background checks for app updates and account expiration, with notifications when Android allows them.",
+    "Adds a b33r-themed amber app UI, download web UI, launcher icon, and Fire TV banner.",
+    "Keeps Android 5.0, Fire TV, Android TV, and phone compatibility."
   ]
 }

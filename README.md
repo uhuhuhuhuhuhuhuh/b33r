@@ -1,12 +1,12 @@
-# APK download site
+# b33r IPTV download site
 
-A responsive, build-free GitHub Pages site for distributing StreamDeck IPTV.
+A responsive, build-free GitHub Pages site for distributing b33r IPTV.
 Large APKs are published as GitHub Release assets rather than committed to the
 Pages repository.
 
 ## Customize before publishing
 
-1. The site is branded for StreamDeck IPTV.
+1. The site is branded for b33r IPTV.
 2. Publish each APK as a GitHub Release asset named
    `StreamDeck-IPTV-<version>.apk`.
 3. Update `versions/latest.json`, `versions/history.json`, and the matching
@@ -22,13 +22,13 @@ Pages repository.
 Windows PowerShell:
 
 ```powershell
-Get-FileHash .\StreamDeck-IPTV-1.9.2.apk -Algorithm SHA256
+Get-FileHash .\StreamDeck-IPTV-1.9.4.apk -Algorithm SHA256
 ```
 
 macOS or Linux:
 
 ```sh
-shasum -a 256 StreamDeck-IPTV-1.9.2.apk
+shasum -a 256 StreamDeck-IPTV-1.9.4.apk
 ```
 
 ## Publish with GitHub Pages
