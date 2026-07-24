@@ -1,0 +1,6 @@
+Place the release APK in this folder and name it:
+
+app.apk
+
+Both the main site and the Fire TV page already point to that file. No APK is
+included in this package.

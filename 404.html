@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#121826">
+    <meta name="robots" content="noindex">
+    <title>Page not found — Northstar</title>
+    <link rel="icon" href="./assets/favicon.png" type="image/png">
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+      .not-found {
+        min-height: 100vh;
+        padding: 32px 24px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        text-align: center;
+        background:
+          radial-gradient(circle at 70% 25%, rgba(184, 242, 56, 0.16), transparent 30%),
+          #121826;
+      }
+      .not-found-card { max-width: 660px; }
+      .not-found-code {
+        margin: 0 0 12px;
+        color: #b8f238;
+        font-size: clamp(5rem, 18vw, 10rem);
+        font-weight: 900;
+        line-height: 0.9;
+        letter-spacing: -0.08em;
+      }
+      .not-found h1 {
+        margin-bottom: 16px;
+        font-size: clamp(2rem, 6vw, 3.5rem);
+      }
+      .not-found p {
+        max-width: 520px;
+        margin: 0 auto 30px;
+        color: #b8c0ce;
+      }
+      .not-found .download-button { justify-content: center; }
+    </style>
+  </head>
+  <body>
+    <main class="not-found">
+      <div class="not-found-card">
+        <p class="not-found-code">404</p>
+        <h1>This page drifted off course.</h1>
+        <p>The address may have changed, or the page may no longer exist. The latest Android download is still waiting at home.</p>
+        <a class="download-button" href="./">Return to download page</a>
+      </div>
+    </main>
+  </body>
+</html>
