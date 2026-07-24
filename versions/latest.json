@@ -1,16 +1,18 @@
 {
   "schemaVersion": 1,
-  "versionCode": 23,
-  "versionName": "1.9.9",
+  "versionCode": 24,
+  "versionName": "1.9.10",
   "releaseDate": "2026-07-24",
   "minimumAndroid": "5.0",
-  "sizeBytes": 57983954,
-  "sha256": "480a9be3acc7041f6b3028052bddde3c75dc0dcedec3613f1c4f86e0f24a2f58",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.9/StreamDeck-IPTV-1.9.9.apk",
+  "sizeBytes": 58011514,
+  "sha256": "c7ac16e7259bb9db5afa020da98a72aa216fe374aaba84e948848e734b548238",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.10/StreamDeck-IPTV-1.9.10.apk",
   "notes": [
-    "Prevents rapid remote presses from starting overlapping catalog, series, update, or playback work.",
-    "Serializes VLC and Media3 fallbacks and gives the current native decoder time to shut down before the next attempt.",
-    "Scales the entire UI and all text, dialogs, menus, controls, focus targets, and grids for phones, tablets, 720p TV, 1080p TV, and 4K TV.",
-    "Uses cancellable network requests and ignores canceled or stale catalog results to reduce memory pressure on older Fire TV boxes."
+    "Bounds and streams large catalogs, cancels stale requests, and retries transient network failures to reduce crashes on older Fire TV hardware.",
+    "Makes automatic Media3 and VLC fallbacks resilient to buffering, decoder startup, app backgrounding, and rapid errors while preserving playback position.",
+    "Fixes Continue Watching progress across exits and player fallbacks so short or zero position samples cannot erase a valid resume point.",
+    "Hardens saved-login refresh, account-expiration handling, secure credential migration, and background notifications.",
+    "Improves phone and TV scaling, Fire TV keyboard and D-pad focus, selectable player controls, audio and subtitle tracks, and quality controls.",
+    "Verifies update size, checksum, package, version, signing identity, and final download location before installation."
   ]
 }

@@ -1,7 +1,20 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.9",
+  "latest": "1.9.10",
   "releases": [
+    {
+      "versionCode": 24,
+      "versionName": "1.9.10",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 58011514,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.10/StreamDeck-IPTV-1.9.10.apk",
+      "notes": [
+        "Makes large catalog, account, and update work bounded, cancellable, and race-safe on older Fire TV hardware.",
+        "Stabilizes automatic playback fallbacks, buffering, and lifecycle handling while preserving Continue Watching progress.",
+        "Fixes Fire TV remote focus and responsive phone, TV, and player-menu scaling.",
+        "Verifies the package, checksum, size, version, signing identity, and final download location before update installation."
+      ]
+    },
     {
       "versionCode": 23,
       "versionName": "1.9.9",

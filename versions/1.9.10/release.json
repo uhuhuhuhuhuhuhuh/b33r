@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "versionCode": 24,
+  "versionName": "1.9.10",
+  "releaseDate": "2026-07-24",
+  "minimumAndroid": "5.0",
+  "sizeBytes": 58011514,
+  "sha256": "c7ac16e7259bb9db5afa020da98a72aa216fe374aaba84e948848e734b548238",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.10/StreamDeck-IPTV-1.9.10.apk",
+  "sourceUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.10/StreamDeck-IPTV-source-1.9.10.zip",
+  "notes": [
+    "Bounds and streams large catalogs, cancels stale requests, and retries transient network failures to reduce crashes on older Fire TV hardware.",
+    "Makes automatic Media3 and VLC fallbacks resilient to buffering, decoder startup, app backgrounding, and rapid errors while preserving playback position.",
+    "Fixes Continue Watching progress across exits and player fallbacks so short or zero position samples cannot erase a valid resume point.",
+    "Hardens saved-login refresh, account-expiration handling, secure credential migration, and background notifications.",
+    "Improves phone and TV scaling, Fire TV keyboard and D-pad focus, selectable player controls, audio and subtitle tracks, and quality controls.",
+    "Verifies update size, checksum, package, version, signing identity, and final download location before installation."
+  ]
+}
