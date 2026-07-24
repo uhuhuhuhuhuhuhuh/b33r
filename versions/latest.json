@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "versionCode": 21,
-  "versionName": "1.9.7",
+  "versionCode": 22,
+  "versionName": "1.9.8",
   "releaseDate": "2026-07-24",
   "minimumAndroid": "5.0",
-  "sizeBytes": 57975818,
-  "sha256": "d8e8cc0d9c9e16b8d24d6bee481126babd01749808df6288c83062297cc3476f",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.7/StreamDeck-IPTV-1.9.7.apk",
+  "sizeBytes": 57978684,
+  "sha256": "f875022da4986a4177ad486b1df9bc547d0a2b2481a7e232dec1d2208d3bcc07",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.8/StreamDeck-IPTV-1.9.8.apk",
   "notes": [
-    "Fixes Fire TV D-pad navigation out of the library search bar in every direction.",
-    "Adds explicit Fire TV focus targets for VLC player controls on live, movies, and episodes.",
-    "Adds explicit Fire TV focus targets for Media3 overlay controls.",
-    "Keeps OK/center-button behavior for opening the Fire TV keyboard on login and search fields."
+    "Adds responsive UI scaling for phones, tablets, Fire TV, and Android TV based on screen size and resolution.",
+    "Scales TV poster grids, side navigation, login card, account badge, and player controls for 720p, 1080p, and 4K displays.",
+    "Keeps the Fire TV search-field directional navigation fixes from 1.9.7.",
+    "Keeps explicit focus targets for VLC and Media3 player controls on live, movies, and episodes."
   ]
 }

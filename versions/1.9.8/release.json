@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "versionCode": 22,
+  "versionName": "1.9.8",
+  "releaseDate": "2026-07-24",
+  "minimumAndroid": "5.0",
+  "sizeBytes": 57978684,
+  "sha256": "f875022da4986a4177ad486b1df9bc547d0a2b2481a7e232dec1d2208d3bcc07",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.8/StreamDeck-IPTV-1.9.8.apk",
+  "sourceUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.8/StreamDeck-IPTV-source-1.9.8.zip",
+  "notes": [
+    "Adds responsive UI scaling for phones, tablets, Fire TV, and Android TV based on screen size and resolution.",
+    "Scales TV poster grids, side navigation, login card, account badge, and player controls for 720p, 1080p, and 4K displays.",
+    "Keeps the Fire TV search-field directional navigation fixes from 1.9.7.",
+    "Keeps explicit focus targets for VLC and Media3 player controls on live, movies, and episodes."
+  ]
+}

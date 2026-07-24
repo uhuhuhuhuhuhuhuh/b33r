@@ -22,19 +22,19 @@ used by the website and the app's automatic updater.
 Windows PowerShell:
 
 ```powershell
-Get-FileHash .\StreamDeck-IPTV-1.9.7.apk -Algorithm SHA256
+Get-FileHash .\StreamDeck-IPTV-1.9.8.apk -Algorithm SHA256
 ```
 
 macOS or Linux:
 
 ```sh
-shasum -a 256 StreamDeck-IPTV-1.9.7.apk
+shasum -a 256 StreamDeck-IPTV-1.9.8.apk
 ```
 
 ## Publish with GitHub Pages
 
 1. Create a GitHub repository and upload these files to its default branch.
-2. In the repository, open **Settings → Pages**.
+2. In the repository, open **Settings &rarr; Pages**.
 3. Under **Build and deployment**, select **Deploy from a branch**.
 4. Select the default branch and `/ (root)`, then save.
 5. If using a custom domain, configure its DNS records as shown by GitHub and
