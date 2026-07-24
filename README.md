@@ -22,13 +22,13 @@ used by the website and the app's automatic updater.
 Windows PowerShell:
 
 ```powershell
-Get-FileHash .\StreamDeck-IPTV-1.9.6.apk -Algorithm SHA256
+Get-FileHash .\StreamDeck-IPTV-1.9.7.apk -Algorithm SHA256
 ```
 
 macOS or Linux:
 
 ```sh
-shasum -a 256 StreamDeck-IPTV-1.9.6.apk
+shasum -a 256 StreamDeck-IPTV-1.9.7.apk
 ```
 
 ## Publish with GitHub Pages

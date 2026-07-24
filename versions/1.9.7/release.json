@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "versionCode": 21,
+  "versionName": "1.9.7",
+  "releaseDate": "2026-07-24",
+  "minimumAndroid": "5.0",
+  "sizeBytes": 57975818,
+  "sha256": "d8e8cc0d9c9e16b8d24d6bee481126babd01749808df6288c83062297cc3476f",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.7/StreamDeck-IPTV-1.9.7.apk",
+  "sourceUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.7/StreamDeck-IPTV-source-1.9.7.zip",
+  "notes": [
+    "Fixes Fire TV D-pad navigation out of the library search bar in every direction.",
+    "Adds explicit Fire TV focus targets for VLC player controls on live, movies, and episodes.",
+    "Adds explicit Fire TV focus targets for Media3 overlay controls.",
+    "Keeps OK/center-button behavior for opening the Fire TV keyboard on login and search fields."
+  ]
+}
