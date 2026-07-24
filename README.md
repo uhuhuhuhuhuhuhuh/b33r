@@ -1,31 +1,34 @@
 # APK download site
 
-A responsive, build-free GitHub Pages site for distributing an Android APK.
-No APK is included.
+A responsive, build-free GitHub Pages site for distributing StreamDeck IPTV.
+Large APKs are published as GitHub Release assets rather than committed to the
+Pages repository.
 
 ## Customize before publishing
 
-1. The site is branded for StreamDeck IPTV version 1.3.
-2. Update the version, release date, file size, minimum Android version, and
-   SHA-256 checksum whenever the APK changes.
-3. Place your APK at `app.apk`, or update the download link
-   in `index.html` to point to a GitHub Release asset.
-4. The custom domain is set to `download.b33r.top` in `CNAME`.
+1. The site is branded for StreamDeck IPTV.
+2. Publish each APK as a GitHub Release asset named
+   `StreamDeck-IPTV-<version>.apk`.
+3. Update `versions/latest.json`, `versions/history.json`, and the matching
+   `versions/<version>/release.json` entry whenever the APK changes.
+4. The website reads those files to show the latest release and visible
+   version history. The Android app also checks `versions/latest.json`.
+5. The custom domain is set to `download.b33r.top` in `CNAME`.
    Update or delete `CNAME` if the domain changes.
-5. Update the description and social metadata in `index.html`.
+6. Update the description and social metadata in `index.html` when needed.
 
 ## Calculate the checksum
 
 Windows PowerShell:
 
 ```powershell
-Get-FileHash .\downloads\app-release.apk -Algorithm SHA256
+Get-FileHash .\StreamDeck-IPTV-1.8.0.apk -Algorithm SHA256
 ```
 
 macOS or Linux:
 
 ```sh
-shasum -a 256 downloads/app-release.apk
+shasum -a 256 StreamDeck-IPTV-1.8.0.apk
 ```
 
 ## Publish with GitHub Pages
@@ -43,8 +46,8 @@ The `.nojekyll` file tells GitHub Pages to publish the folder exactly as-is.
 
 - The main page automatically sends common Fire TV, Silk, and Downloader user
   agents to `tv.html`, which has one large remote-friendly download button.
-- The shortest route is the direct APK address:
-  `https://download.b33r.top/app.apk`.
+- The shortest route is `https://download.b33r.top`; the TV page resolves the
+  latest GitHub Release asset from `versions/latest.json`.
 - After the real custom domain is live, you can use Downloader's built-in
   short-code/URL-shortening option to make the address even easier to enter.
 - Point the `download.b33r.top` DNS record to the value GitHub shows in the

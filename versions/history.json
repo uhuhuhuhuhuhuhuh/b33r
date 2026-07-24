@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "latest": "1.8.0",
+  "releases": [
+    {
+      "versionCode": 9,
+      "versionName": "1.8.0",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 95209572,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.8.0/StreamDeck-IPTV-1.8.0.apk",
+      "notes": [
+        "Secure in-app update checks, downloads, checksum verification, and installer handoff.",
+        "Automatic playback-engine fallbacks with selectable audio and subtitle tracks."
+      ]
+    },
+    {
+      "versionCode": 8,
+      "versionName": "1.7.0",
+      "releaseDate": "2026-07-24",
+      "notes": [
+        "Automatic VLC hardware, VLC software, alternate-source, and Media3 fallback sequence.",
+        "Custom audio and subtitle track menus."
+      ]
+    },
+    {
+      "versionCode": 7,
+      "versionName": "1.6.0",
+      "releaseDate": "2026-07-24",
+      "notes": [
+        "Added an embedded LibVLC playback engine and software-decoding mode."
+      ]
+    },
+    {
+      "versionCode": 6,
+      "versionName": "1.5.0",
+      "releaseDate": "2026-07-24",
+      "notes": [
+        "Added Media3 surface, texture, decoder, and direct-source playback fallbacks."
+      ]
+    },
+    {
+      "versionCode": 5,
+      "versionName": "1.4.0",
+      "releaseDate": "2026-07-24",
+      "notes": [
+        "Expanded stream-type support and preserved search text through playback."
+      ]
+    },
+    {
+      "versionCode": 4,
+      "versionName": "1.3.0",
+      "releaseDate": "2026-07-24",
+      "notes": [
+        "Introduced the monochrome-background visual design, full-color covers, and per-library search."
+      ]
+    }
+  ]
+}

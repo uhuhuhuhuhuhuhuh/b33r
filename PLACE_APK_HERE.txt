@@ -1,6 +1,8 @@
-Place the release APK in this folder and name it:
+Do not commit the APK to this folder.
 
-app.apk
+Publish it as a GitHub Release asset named:
 
-Both the main site and the Fire TV page already point to that file. No APK is
-included in this package.
+StreamDeck-IPTV-<version>.apk
+
+Then update the JSON files under versions/. The main site, Fire TV page, and
+Android app updater all resolve the newest release from that metadata.
