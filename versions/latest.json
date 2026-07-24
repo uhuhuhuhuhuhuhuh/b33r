@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "versionCode": 22,
-  "versionName": "1.9.8",
+  "versionCode": 23,
+  "versionName": "1.9.9",
   "releaseDate": "2026-07-24",
   "minimumAndroid": "5.0",
-  "sizeBytes": 57978684,
-  "sha256": "f875022da4986a4177ad486b1df9bc547d0a2b2481a7e232dec1d2208d3bcc07",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.8/StreamDeck-IPTV-1.9.8.apk",
+  "sizeBytes": 57983954,
+  "sha256": "480a9be3acc7041f6b3028052bddde3c75dc0dcedec3613f1c4f86e0f24a2f58",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.9/StreamDeck-IPTV-1.9.9.apk",
   "notes": [
-    "Adds responsive UI scaling for phones, tablets, Fire TV, and Android TV based on screen size and resolution.",
-    "Scales TV poster grids, side navigation, login card, account badge, and player controls for 720p, 1080p, and 4K displays.",
-    "Keeps the Fire TV search-field directional navigation fixes from 1.9.7.",
-    "Keeps explicit focus targets for VLC and Media3 player controls on live, movies, and episodes."
+    "Prevents rapid remote presses from starting overlapping catalog, series, update, or playback work.",
+    "Serializes VLC and Media3 fallbacks and gives the current native decoder time to shut down before the next attempt.",
+    "Scales the entire UI and all text, dialogs, menus, controls, focus targets, and grids for phones, tablets, 720p TV, 1080p TV, and 4K TV.",
+    "Uses cancellable network requests and ignores canceled or stale catalog results to reduce memory pressure on older Fire TV boxes."
   ]
 }

@@ -1,7 +1,19 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.8",
+  "latest": "1.9.9",
   "releases": [
+    {
+      "versionCode": 23,
+      "versionName": "1.9.9",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 57983954,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.9/StreamDeck-IPTV-1.9.9.apk",
+      "notes": [
+        "Prevents repeated presses and duplicate player errors from starting overlapping work.",
+        "Serializes VLC and Media3 decoder teardown before each fallback.",
+        "Applies app-wide UI and text scaling profiles for phones, tablets, and 720p, 1080p, or 4K TVs."
+      ]
+    },
     {
       "versionCode": 22,
       "versionName": "1.9.8",
