@@ -1,7 +1,20 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.1",
+  "latest": "1.9.2",
   "releases": [
+    {
+      "versionCode": 16,
+      "versionName": "1.9.2",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 57625998,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.9.2/StreamDeck-IPTV-1.9.2.apk",
+      "notes": [
+        "Fire TV's system keyboard opens only after OK is pressed on login or search.",
+        "Polishes the login and library while keeping artwork in full color.",
+        "Adds a dedicated TV home-screen icon, adaptive quality choices, and fit-to-screen playback.",
+        "Shows username and expiration in the library header, never during playback."
+      ]
+    },
     {
       "versionCode": 12,
       "versionName": "1.9.1",

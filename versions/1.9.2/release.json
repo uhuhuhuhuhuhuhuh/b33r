@@ -1,5 +1,4 @@
 {
-  "schemaVersion": 1,
   "versionCode": 16,
   "versionName": "1.9.2",
   "releaseDate": "2026-07-24",
@@ -10,10 +9,7 @@
   "notes": [
     "Fire TV's system keyboard opens only after pressing OK on a login or search field.",
     "Merely focusing a field with the D-pad no longer opens the keyboard.",
-    "The library header shows the signed-in username and expiration date, but playback remains uncluttered.",
-    "Adds a refined login and library design while retaining full-color artwork.",
-    "Adds a dedicated Fire TV home-screen icon and 320:180 launcher banner.",
-    "Adds Auto quality by default with 720p through 2160p and Max choices.",
-    "Fits video without stretching or cropping and retains Android 5.0 support, buffering, secure updates, and fallback players."
+    "The refined library header shows the username and expiration only outside playback.",
+    "Adds a dedicated TV launcher icon and banner, adaptive quality choices, and aspect-ratio-preserving video fit."
   ]
 }
