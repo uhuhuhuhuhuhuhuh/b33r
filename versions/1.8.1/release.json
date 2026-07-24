@@ -1,5 +1,4 @@
 {
-  "schemaVersion": 1,
   "versionCode": 10,
   "versionName": "1.8.1",
   "releaseDate": "2026-07-24",
@@ -8,9 +7,7 @@
   "sha256": "b3de21844545944183d1bd27ed5084c53da6c9429dd2248f3ae8a595fe2bddf3",
   "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.8.1/StreamDeck-IPTV-1.8.1.apk",
   "notes": [
-    "Fixed a crash when opening live TV, movies, series, or episodes.",
-    "Preserved VLC native playback classes by disabling unsafe code shrinking.",
-    "Added secure automatic update checks and verified in-app downloads.",
-    "Kept automatic playback fallback plus audio and subtitle selection."
+    "Fixed crashes when opening content by preserving VLC's native playback classes.",
+    "Retains secure updates, automatic fallbacks, and audio/subtitle controls."
   ]
 }
