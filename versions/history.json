@@ -1,7 +1,18 @@
 {
   "schemaVersion": 1,
-  "latest": "1.8.1",
+  "latest": "1.9.0",
   "releases": [
+    {
+      "versionCode": 11,
+      "versionName": "1.9.0",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 109051884,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.9.0/StreamDeck-IPTV-1.9.0.apk",
+      "notes": [
+        "Live TV controls show LIVE and controls auto-hide until input is detected.",
+        "Movies, series, and episodes add 10-second rewind and 30-second forward controls."
+      ]
+    },
     {
       "versionCode": 10,
       "versionName": "1.8.1",
