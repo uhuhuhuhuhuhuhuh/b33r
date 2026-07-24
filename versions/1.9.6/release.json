@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "versionCode": 20,
+  "versionName": "1.9.6",
+  "releaseDate": "2026-07-24",
+  "minimumAndroid": "5.0",
+  "sizeBytes": 57971377,
+  "sha256": "70514e7040a76f0cd6326fae96cd8e2439d6a1fb25a07d365a74f811e7ff95c7",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.6/StreamDeck-IPTV-1.9.6.apk",
+  "sourceUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.6/StreamDeck-IPTV-source-1.9.6.zip",
+  "notes": [
+    "Fixes Fire TV remote focus on the update prompt so Update now and Later can be selected.",
+    "Fixes Fire TV library navigation so pressing Down from search moves to the first visible result.",
+    "Keeps OK/center-button behavior for opening the Fire TV keyboard on login and search fields.",
+    "Keeps Favorites, Continue Watching, timestamp resume, and account-expiration refresh from 1.9.5."
+  ]
+}

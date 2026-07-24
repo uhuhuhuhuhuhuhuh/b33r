@@ -1,7 +1,19 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.5",
+  "latest": "1.9.6",
   "releases": [
+    {
+      "versionCode": 20,
+      "versionName": "1.9.6",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 57971377,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.6/StreamDeck-IPTV-1.9.6.apk",
+      "notes": [
+        "Fixes Fire TV remote focus on the update prompt so Update now and Later can be selected.",
+        "Fixes Fire TV library navigation so pressing Down from search moves to the first visible result.",
+        "Keeps OK/center-button behavior for opening the Fire TV keyboard on login and search fields."
+      ]
+    },
     {
       "versionCode": 19,
       "versionName": "1.9.5",
