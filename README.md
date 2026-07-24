@@ -5,9 +5,9 @@ No APK is included.
 
 ## Customize before publishing
 
-1. Replace `Northstar` throughout the files with your app name.
+1. The site is branded for StreamDeck IPTV version 1.3.
 2. Update the version, release date, file size, minimum Android version, and
-   SHA-256 checksum in `index.html`.
+   SHA-256 checksum whenever the APK changes.
 3. Place your APK at `app.apk`, or update the download link
    in `index.html` to point to a GitHub Release asset.
 4. The custom domain is set to `download.b33r.top` in `CNAME`.
