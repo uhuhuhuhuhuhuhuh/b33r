@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "versionCode": 11,
-  "versionName": "1.9.0",
+  "versionCode": 12,
+  "versionName": "1.9.1",
   "releaseDate": "2026-07-24",
-  "minimumAndroid": "6.0",
-  "sizeBytes": 109051884,
-  "sha256": "df7024803293a812289d2fe9e51ca972a04ff500d30283af56144979d2138a0d",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.9.0/StreamDeck-IPTV-1.9.0.apk",
+  "minimumAndroid": "5.0",
+  "sizeBytes": 57547253,
+  "sha256": "597d6d8edd2e3f8740594efa5632f56dd950fcc711a44c58727f9f8434bda267",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.9.1/StreamDeck-IPTV-1.9.1.apk",
   "notes": [
-    "Live TV controls display a clear LIVE status instead of seek controls.",
-    "Playback controls hide automatically after five seconds and return on touch, keyboard, or remote input.",
-    "Movies, series, and episodes include 10-second rewind and 30-second forward controls.",
-    "Retains the playback crash fix, automatic fallback players, and audio/subtitle track selection."
+    "Adds Android 5.0 compatibility for older Fire TV boxes, including Android 5.1/API 22 models.",
+    "Adds a visible buffering indicator and larger network buffers for older hardware and unstable streams.",
+    "Retains secure automatic updates, LIVE controls, VOD skipping, fallback players, and audio/subtitle selection.",
+    "Test-installed and launched successfully on an Amazon Fire TV AFTB running Android 5.1.1."
   ]
 }

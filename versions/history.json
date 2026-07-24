@@ -1,7 +1,18 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.0",
+  "latest": "1.9.1",
   "releases": [
+    {
+      "versionCode": 12,
+      "versionName": "1.9.1",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 57547253,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.9.1/StreamDeck-IPTV-1.9.1.apk",
+      "notes": [
+        "Adds Android 5.0 compatibility for older Fire TV boxes.",
+        "Adds visible buffering status and larger network buffers while retaining automatic updates."
+      ]
+    },
     {
       "versionCode": 11,
       "versionName": "1.9.0",
