@@ -1,13 +1,13 @@
 # b33r IPTV download site
 
 A responsive, build-free GitHub Pages site for distributing b33r IPTV.
-Large APKs are published as GitHub Release assets rather than committed to the
-Pages repository.
+Each public build lives in a `versions/<version>/` folder with release metadata
+used by the website and the app's automatic updater.
 
 ## Customize before publishing
 
 1. The site is branded for b33r IPTV.
-2. Publish each APK as a GitHub Release asset named
+2. Publish each APK in `versions/<version>/` as
    `StreamDeck-IPTV-<version>.apk`.
 3. Update `versions/latest.json`, `versions/history.json`, and the matching
    `versions/<version>/release.json` entry whenever the APK changes.
@@ -22,13 +22,13 @@ Pages repository.
 Windows PowerShell:
 
 ```powershell
-Get-FileHash .\StreamDeck-IPTV-1.9.4.apk -Algorithm SHA256
+Get-FileHash .\StreamDeck-IPTV-1.9.5.apk -Algorithm SHA256
 ```
 
 macOS or Linux:
 
 ```sh
-shasum -a 256 StreamDeck-IPTV-1.9.4.apk
+shasum -a 256 StreamDeck-IPTV-1.9.5.apk
 ```
 
 ## Publish with GitHub Pages
@@ -47,7 +47,7 @@ The `.nojekyll` file tells GitHub Pages to publish the folder exactly as-is.
 - The main page automatically sends common Fire TV, Silk, and Downloader user
   agents to `tv.html`, which has one large remote-friendly download button.
 - The shortest route is `https://download.b33r.top`; the TV page resolves the
-  latest GitHub Release asset from `versions/latest.json`.
+  latest version-folder APK from `versions/latest.json`.
 - After the real custom domain is live, you can use Downloader's built-in
   short-code/URL-shortening option to make the address even easier to enter.
 - Point the `download.b33r.top` DNS record to the value GitHub shows in the

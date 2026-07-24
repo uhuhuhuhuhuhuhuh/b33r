@@ -1,7 +1,20 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.4",
+  "latest": "1.9.5",
   "releases": [
+    {
+      "versionCode": 19,
+      "versionName": "1.9.5",
+      "releaseDate": "2026-07-24",
+      "sizeBytes": 57969541,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.5/StreamDeck-IPTV-1.9.5.apk",
+      "notes": [
+        "Adds a local Favorites section for Live TV, Movies, and Series.",
+        "Adds Continue Watching for movies and series episodes, with saved timestamps and automatic resume.",
+        "Refreshes the top-right account expiration display from the server while the app is open and when the app resumes.",
+        "Re-checks account status before locally expiring a session, so Dispatcharr-side extensions can be picked up."
+      ]
+    },
     {
       "versionCode": 18,
       "versionName": "1.9.4",

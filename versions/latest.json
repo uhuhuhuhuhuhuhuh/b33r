@@ -1,18 +1,17 @@
 {
   "schemaVersion": 1,
-  "versionCode": 18,
-  "versionName": "1.9.4",
+  "versionCode": 19,
+  "versionName": "1.9.5",
   "releaseDate": "2026-07-24",
   "minimumAndroid": "5.0",
-  "sizeBytes": 57954724,
-  "sha256": "46393b854db845c3112191b6594614cf819ce3ffb3c6733c6fb4de07156413bf",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.4/StreamDeck-IPTV-1.9.4.apk",
+  "sizeBytes": 57969541,
+  "sha256": "7ca8ced2817c57b78f19f0c1d5c6440e4fb5339748158a27f20a04f90a46041c",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.5/StreamDeck-IPTV-1.9.5.apk",
   "notes": [
-    "Adds account-expiration enforcement for null, future, and expired Dispatcharr/XC accounts.",
-    "Blocks expired accounts from login, catalog access, and playback with a clear expired-account message.",
-    "Stores the last known expiration securely so saved sessions can expire cleanly later.",
-    "Adds background checks for app updates and account expiration, with notifications when Android allows them.",
-    "Adds a b33r-themed amber app UI, download web UI, launcher icon, and Fire TV banner.",
+    "Adds a local Favorites section for Live TV, Movies, and Series.",
+    "Adds Continue Watching for movies and series episodes, with saved timestamps and automatic resume.",
+    "Refreshes the top-right account expiration display from the server while the app is open and when the app resumes.",
+    "Re-checks account status before locally expiring a session, so Dispatcharr-side extensions can be picked up.",
     "Keeps Android 5.0, Fire TV, Android TV, and phone compatibility."
   ]
 }
