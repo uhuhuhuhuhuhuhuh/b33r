@@ -7,6 +7,7 @@
   "sha256": "ff95b12c87a7ae47561f67aa4e5a3653a1ad4608050e12d44457c5f128253fda",
   "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/releases/download/v1.8.0/StreamDeck-IPTV-1.8.0.apk",
   "notes": [
+    "Superseded by 1.8.1 because release optimization could crash when playback opened.",
     "Added secure automatic update checks and verified in-app downloads.",
     "Added automatic playback-engine fallback without player-selection prompts.",
     "Added embedded audio-track and subtitle selection controls."
