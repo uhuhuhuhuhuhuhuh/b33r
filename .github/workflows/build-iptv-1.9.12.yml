@@ -17,7 +17,7 @@ concurrency:
 
 env:
   VERSION_NAME: "1.9.12"
-  VERSION_CODE: "26"
+  VERSION_CODE: "27"
   SOURCE_ARCHIVE: "versions/1.9.11/StreamDeck-IPTV-source-1.9.11.zip"
   B33R_RELEASE_KEYSTORE_BASE64: ${{ secrets.B33R_RELEASE_KEYSTORE_BASE64 }}
   B33R_RELEASE_STORE_PASSWORD: ${{ secrets.B33R_RELEASE_STORE_PASSWORD }}
@@ -74,13 +74,14 @@ jobs:
             | gzip -dc > "$RUNNER_TEMP/AppUi-01-responsive.patch"
           cd "$SRC"
           patch -p1 --forward --batch < "$RUNNER_TEMP/AppUi-01-responsive.patch"
+          python3 "$GITHUB_WORKSPACE/build-input/1.9.12/apply_updater_hotfix.py"
 
           python3 - <<'PY'
           from pathlib import Path
           import re
           path = Path("app/build.gradle.kts")
           text = path.read_text()
-          text, count_code = re.subn(r'versionCode\s*=\s*25', 'versionCode = 26', text, count=1)
+          text, count_code = re.subn(r'versionCode\s*=\s*25', 'versionCode = 27', text, count=1)
           text, count_name = re.subn(r'versionName\s*=\s*"1\.9\.11"', 'versionName = "1.9.12"', text, count=1)
           text = re.sub(
               r'compileSdk\s*\{\s*version\s*=\s*release\(36\)\s*\{\s*minorApiLevel\s*=\s*1\s*\}\s*\}',
@@ -197,8 +198,11 @@ jobs:
 
           The interface reflows for portrait and landscape screens, adapts launch-card sizing, and constrains dynamic text to prevent overlapping and clipping.
 
-          It is signed with GitHub Actions' debug key because production signing secrets were not available. It cannot update a production-signed installation in place.
+          The updater now includes a visible manual check button and reports up-to-date, preview-channel, and network/error results instead of failing silently.
 
+          It is signed with GitHub Actions' debug key because production signing secrets were not available. It cannot update a production-signed installation in place, and another independently debug-signed preview cannot update it in place.
+
+          Version code: $VERSION_CODE
           SHA-256: $SHA
           Size: $SIZE bytes
           EOF_PREVIEW
@@ -224,6 +228,8 @@ jobs:
               "Adds adaptive portrait, landscape, phone, tablet, and television layouts.",
               "Reflows header and account information on narrow screens.",
               "Prevents dynamic titles, categories, counts, and navigation labels from overlapping or clipping.",
+              "Adds a visible manual update check with success, preview-channel, and failure feedback.",
+              "Preserves secure checksum, package, version, and signing-certificate verification.",
               "Preserves the VLC and Media3 playback stack and fallback behavior.",
           ]
           latest = {
@@ -259,7 +265,7 @@ jobs:
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "Build $VERSION_NAME responsive Smarters-style UI"
+          git commit -m "Build $VERSION_NAME updater hotfix"
           git push origin HEAD:main
 
       - name: Upload workflow artifact
