@@ -1,1 +1,1 @@
-Extract and inspect the updater implementation from the 1.9.12 generated source.
+Extract updater implementation and inspect signing material in the 1.9.12 generated source.
