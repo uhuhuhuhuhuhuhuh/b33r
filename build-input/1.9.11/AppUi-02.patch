@@ -1,0 +1,268 @@
+diff --git a/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt b/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt
+@@ -1268,8 +1232,265 @@
+ }
+ 
+ @Composable
++private fun SmartersTopBar(
++    state: IptvUiState,
++    wide: Boolean,
++    responsive: ResponsiveLayout,
++    onBackFromSeries: () -> Unit,
++    onLogout: (() -> Unit)?,
++) {
++    Surface(
++        modifier = Modifier
++            .fillMaxWidth()
++            .padding(
++                start = responsive.pagePadding,
++                end = responsive.pagePadding,
++                top = responsive.dp(14f),
++                bottom = responsive.dp(12f),
++            ),
++        shape = RoundedCornerShape(responsive.dp(18f)),
++        color = Color(0xF5150A05),
++        border = BorderStroke(1.dp, Color(0xFF5E3816)),
++        shadowElevation = responsive.dp(10f),
++    ) {
++        Row(
++            modifier = Modifier.fillMaxWidth().padding(
++                horizontal = responsive.dp(14f),
++                vertical = responsive.dp(11f),
++            ),
++            verticalAlignment = Alignment.CenterVertically,
++        ) {
++            if (state.seriesTitle != null) {
++                IconButton(onClick = onBackFromSeries) {
++                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
++                }
++            }
++            Surface(
++                modifier = Modifier.size(responsive.dp(if (wide) 50f else 44f)),
++                shape = RoundedCornerShape(responsive.dp(14f)),
++                color = MaterialTheme.colorScheme.primary,
++                shadowElevation = responsive.dp(5f),
++            ) {
++                Box(contentAlignment = Alignment.Center) {
++                    Text(
++                        text = "b33r",
++                        color = MaterialTheme.colorScheme.onPrimary,
++                        fontWeight = FontWeight.Black,
++                        fontSize = responsive.sp(12f),
++                    )
++                }
++            }
++            Spacer(Modifier.width(responsive.dp(12f)))
++            Column(modifier = Modifier.weight(1f)) {
++                Text(
++                    text = "B33R SMART HUB",
++                    color = MaterialTheme.colorScheme.primary,
++                    fontSize = responsive.sp(9f),
++                    fontWeight = FontWeight.Black,
++                    letterSpacing = 2.2.sp,
++                )
++                Text(
++                    text = state.seriesTitle ?: "Premium IPTV Player",
++                    style = if (wide) {
++                        MaterialTheme.typography.headlineSmall
++                    } else {
++                        MaterialTheme.typography.titleLarge
++                    },
++                    fontWeight = FontWeight.Bold,
++                    maxLines = 1,
++                    overflow = TextOverflow.Ellipsis,
++                )
++                if (wide && state.seriesTitle == null) {
++                    Text(
++                        text = "Live TV • Movies • Series • Multi-engine playback",
++                        color = MaterialTheme.colorScheme.onSurfaceVariant,
++                        fontSize = responsive.sp(10f),
++                        maxLines = 1,
++                    )
++                }
++            }
++            if (state.accountUsername.isNotBlank()) {
++                Surface(
++                    modifier = Modifier
++                        .padding(start = responsive.dp(8f))
++                        .widthIn(max = responsive.dp(if (wide) 190f else 130f)),
++                    shape = RoundedCornerShape(responsive.dp(12f)),
++                    color = Color(0xFF241307),
++                    border = BorderStroke(
++                        1.dp,
++                        MaterialTheme.colorScheme.primary.copy(alpha = 0.32f),
++                    ),
++                ) {
++                    Column(
++                        modifier = Modifier.padding(
++                            horizontal = responsive.dp(11f),
++                            vertical = responsive.dp(7f),
++                        ),
++                        horizontalAlignment = Alignment.End,
++                    ) {
++                        Text(
++                            text = state.accountUsername,
++                            fontWeight = FontWeight.Bold,
++                            maxLines = 1,
++                            overflow = TextOverflow.Ellipsis,
++                            style = MaterialTheme.typography.labelLarge,
++                        )
++                        Text(
++                            text = formatAccountExpiration(state.accountExpiresAtEpochSeconds),
++                            color = MaterialTheme.colorScheme.onSurfaceVariant,
++                            maxLines = 1,
++                            style = MaterialTheme.typography.labelSmall,
++                        )
++                    }
++                }
++            }
++            onLogout?.let { logout ->
++                IconButton(onClick = logout) {
++                    Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Log out")
++                }
++            }
++        }
++    }
++}
++
++@Composable
++private fun SmartersLaunchRow(
++    selected: LibrarySection,
++    visibleItemCount: Int,
++    responsive: ResponsiveLayout,
++    enabled: Boolean,
++    onSection: (LibrarySection) -> Unit,
++) {
++    val sections = listOf(
++        LibrarySection.LIVE,
++        LibrarySection.MOVIES,
++        LibrarySection.SERIES,
++        LibrarySection.FAVORITES,
++        LibrarySection.RESUME,
++    )
++    LazyRow(
++        contentPadding = androidx.compose.foundation.layout.PaddingValues(
++            horizontal = responsive.pagePadding,
++        ),
++        horizontalArrangement = Arrangement.spacedBy(responsive.dp(12f)),
++    ) {
++        items(sections, key = { it.name }) { section ->
++            SmartersLaunchCard(
++                section = section,
++                selected = selected == section,
++                count = if (selected == section) visibleItemCount else null,
++                responsive = responsive,
++                enabled = enabled,
++                onClick = { onSection(section) },
++            )
++        }
++    }
++}
++
++@Composable
++private fun SmartersLaunchCard(
++    section: LibrarySection,
++    selected: Boolean,
++    count: Int?,
++    responsive: ResponsiveLayout,
++    enabled: Boolean,
++    onClick: () -> Unit,
++) {
++    var focused by remember { mutableStateOf(false) }
++    val scale by animateFloatAsState(
++        targetValue = if (focused) 1.055f else 1f,
++        label = "launchCardScale",
++    )
++    val accent = when (section) {
++        LibrarySection.LIVE -> Color(0xFFFFB02E)
++        LibrarySection.MOVIES -> Color(0xFFFF8B2C)
++        LibrarySection.SERIES -> Color(0xFFE7B354)
++        LibrarySection.FAVORITES -> Color(0xFFFFC85A)
++        LibrarySection.RESUME -> Color(0xFFD99535)
++    }
++    val subtitle = when (section) {
++        LibrarySection.LIVE -> "Channels on tap"
++        LibrarySection.MOVIES -> "On-demand pours"
++        LibrarySection.SERIES -> "Binge the whole keg"
++        LibrarySection.FAVORITES -> "Your saved picks"
++        LibrarySection.RESUME -> "Keep watching"
++    }
++    Card(
++        onClick = onClick,
++        enabled = enabled,
++        modifier = Modifier
++            .width(responsive.dp(if (responsive.isTelevision) 188f else 152f))
++            .height(responsive.dp(if (responsive.isTelevision) 112f else 94f))
++            .scale(scale)
++            .onFocusChanged { focused = it.isFocused },
++        shape = RoundedCornerShape(responsive.dp(18f)),
++        border = BorderStroke(
++            width = if (focused) 3.dp else 1.dp,
++            color = if (focused || selected) accent else Color(0xFF563316),
++        ),
++        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
++    ) {
++        Box(
++            modifier = Modifier
++                .fillMaxSize()
++                .background(
++                    Brush.linearGradient(
++                        colors = listOf(
++                            accent.copy(alpha = if (selected) 0.38f else 0.22f),
++                            Color(0xFF2A1608),
++                            Color(0xFF130804),
++                        ),
++                    ),
++                )
++                .padding(responsive.dp(14f)),
++        ) {
++            Icon(
++                imageVector = section.icon(),
++                contentDescription = null,
++                tint = accent,
++                modifier = Modifier.size(responsive.dp(if (responsive.isTelevision) 34f else 28f)),
++            )
++            Column(
++                modifier = Modifier.align(Alignment.BottomStart),
++            ) {
++                Text(
++                    text = section.title,
++                    color = Color.White,
++                    fontWeight = FontWeight.Black,
++                    fontSize = responsive.sp(if (responsive.isTelevision) 16f else 14f),
++                    maxLines = 1,
++                )
++                Text(
++                    text = count?.let { "$it loaded" } ?: subtitle,
++                    color = Color(0xFFD5C2AE),
++                    fontSize = responsive.sp(9f),
++                    maxLines = 1,
++                    overflow = TextOverflow.Ellipsis,
++                )
++            }
++            if (selected) {
++                Text(
++                    text = "OPEN",
++                    modifier = Modifier
++                        .align(Alignment.TopEnd)
++                        .background(accent, RoundedCornerShape(responsive.dp(6f)))
++                        .padding(
++                            horizontal = responsive.dp(6f),
++                            vertical = responsive.dp(3f),
++                        ),
++                    color = Color(0xFF170B04),
++                    fontSize = responsive.sp(8f),
++                    fontWeight = FontWeight.Black,
++                    letterSpacing = 0.8.sp,
++                )
++            }
++        }
++    }
++}
++
++@Composable
+ private fun libraryFilterChipColors() = FilterChipDefaults.filterChipColors(
+-    containerColor = Color(0xFF151515),
++    containerColor = Color(0xFF1B0E06),
+     labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+     iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+     selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.16f),
