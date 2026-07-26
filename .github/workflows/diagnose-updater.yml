@@ -23,11 +23,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          ARCHIVE="versions/1.9.12/StreamDeck-IPTV-source-1.9.12.zip"
           SRC="$RUNNER_TEMP/b33r-updater-source"
           OUT="build-input/updater-diagnostics/source"
           rm -rf "$SRC" "$OUT"
           mkdir -p "$SRC" "$OUT"
-          unzip -q versions/1.9.12/StreamDeck-IPTV-source-1.9.12.zip -d "$SRC"
+          unzip -q "$ARCHIVE" -d "$SRC"
+
+          unzip -Z1 "$ARCHIVE" | grep -Ei '(^|/)([^/]*(jks|keystore|sign)[^/]*|gradle\.properties|local\.properties|keystore\.properties)$' \
+            > build-input/updater-diagnostics/SIGNING_FILES.md || true
+          if [[ ! -s build-input/updater-diagnostics/SIGNING_FILES.md ]]; then
+            printf '%s\n' '# Signing files' '' 'No keystore or signing-property files were found in the source archive.' \
+              > build-input/updater-diagnostics/SIGNING_FILES.md
+          fi
 
           cd "$SRC"
           mapfile -t matches < <(
