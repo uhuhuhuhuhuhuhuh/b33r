@@ -1,0 +1,273 @@
+name: Build B33R IPTV 1.9.12
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "build-input/1.9.12/**"
+      - ".github/workflows/build-iptv-1.9.12.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-b33r-iptv-1.9.12
+  cancel-in-progress: false
+
+env:
+  VERSION_NAME: "1.9.12"
+  VERSION_CODE: "26"
+  SOURCE_ARCHIVE: "versions/1.9.11/StreamDeck-IPTV-source-1.9.11.zip"
+  B33R_RELEASE_KEYSTORE_BASE64: ${{ secrets.B33R_RELEASE_KEYSTORE_BASE64 }}
+  B33R_RELEASE_STORE_PASSWORD: ${{ secrets.B33R_RELEASE_STORE_PASSWORD }}
+  B33R_RELEASE_KEY_ALIAS: ${{ secrets.B33R_RELEASE_KEY_ALIAS }}
+  B33R_RELEASE_KEY_PASSWORD: ${{ secrets.B33R_RELEASE_KEY_PASSWORD }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Unpack and patch source
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/b33r-iptv-${VERSION_NAME}"
+          rm -rf "$SRC"
+          mkdir -p "$SRC"
+          python3 - "$SOURCE_ARCHIVE" "$SRC" <<'PY'
+          import pathlib, sys, zipfile
+          archive = pathlib.Path(sys.argv[1])
+          target = pathlib.Path(sys.argv[2])
+          with zipfile.ZipFile(archive) as zf:
+              for info in zf.infolist():
+                  normalized = info.filename.replace("\\", "/").lstrip("/")
+                  if not normalized:
+                      continue
+                  destination = target / normalized
+                  if info.is_dir() or normalized.endswith("/"):
+                      destination.mkdir(parents=True, exist_ok=True)
+                  else:
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      destination.write_bytes(zf.read(info))
+          PY
+
+          base64 --decode "$GITHUB_WORKSPACE/build-input/1.9.12/AppUi-01-responsive.patch.gz.b64" \
+            | gzip -dc > "$RUNNER_TEMP/AppUi-01-responsive.patch"
+          cd "$SRC"
+          patch -p1 --forward --batch < "$RUNNER_TEMP/AppUi-01-responsive.patch"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          path = Path("app/build.gradle.kts")
+          text = path.read_text()
+          text, count_code = re.subn(r'versionCode\s*=\s*25', 'versionCode = 26', text, count=1)
+          text, count_name = re.subn(r'versionName\s*=\s*"1\.9\.11"', 'versionName = "1.9.12"', text, count=1)
+          text = re.sub(
+              r'compileSdk\s*\{\s*version\s*=\s*release\(36\)\s*\{\s*minorApiLevel\s*=\s*1\s*\}\s*\}',
+              'compileSdk = 36',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if count_code != 1 or count_name != 1:
+              raise SystemExit("Could not update version metadata")
+          path.write_text(text)
+          PY
+
+          chmod +x gradlew
+          echo "src=$SRC" >> "$GITHUB_OUTPUT"
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          test -n "$SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Compile debug validation build
+        working-directory: ${{ steps.source.outputs.src }}
+        shell: bash
+        run: ./gradlew --no-daemon --stacktrace assembleDebug
+
+      - name: Build production-signed release when secrets are available
+        id: signed
+        working-directory: ${{ steps.source.outputs.src }}
+        shell: bash
+        run: |
+          set -uo pipefail
+          echo "available=false" >> "$GITHUB_OUTPUT"
+          if [[ -z "${B33R_RELEASE_KEYSTORE_BASE64:-}" || \
+                -z "${B33R_RELEASE_STORE_PASSWORD:-}" || \
+                -z "${B33R_RELEASE_KEY_ALIAS:-}" || \
+                -z "${B33R_RELEASE_KEY_PASSWORD:-}" ]]; then
+            echo "Production signing secrets are not configured; publishing a preview APK."
+            exit 0
+          fi
+          KEYSTORE="$PWD/b33r-release.jks"
+          if ! printf '%s' "$B33R_RELEASE_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE"; then
+            rm -f "$KEYSTORE"
+            exit 0
+          fi
+          export B33R_RELEASE_STORE_FILE="$KEYSTORE"
+          if ./gradlew --no-daemon --stacktrace assembleRelease; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+          rm -f "$KEYSTORE"
+
+      - name: Package APK and source
+        id: package
+        shell: bash
+        env:
+          SRC: ${{ steps.source.outputs.src }}
+          SIGNED: ${{ steps.signed.outputs.available }}
+        run: |
+          set -euo pipefail
+          DEST="$GITHUB_WORKSPACE/versions/$VERSION_NAME"
+          mkdir -p "$DEST"
+          rm -f "$DEST"/StreamDeck-IPTV-"$VERSION_NAME"*.apk
+          if [[ "$SIGNED" == "true" ]]; then
+            APK="$SRC/app/build/outputs/apk/release/app-release.apk"
+            OUT="$DEST/StreamDeck-IPTV-$VERSION_NAME.apk"
+            CHANNEL="release"
+          else
+            APK="$SRC/app/build/outputs/apk/debug/app-debug.apk"
+            OUT="$DEST/StreamDeck-IPTV-$VERSION_NAME-preview.apk"
+            CHANNEL="preview"
+          fi
+          test -s "$APK"
+          cp "$APK" "$OUT"
+
+          python3 - "$SRC" "$DEST/StreamDeck-IPTV-source-$VERSION_NAME.zip" <<'PY'
+          import pathlib, sys, zipfile
+          source = pathlib.Path(sys.argv[1])
+          output = pathlib.Path(sys.argv[2])
+          excluded_parts = {".gradle", "build"}
+          excluded_names = {"b33r-release.jks", "local.properties"}
+          with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in sorted(source.rglob("*")):
+                  relative = path.relative_to(source)
+                  if any(part in excluded_parts for part in relative.parts):
+                      continue
+                  if path.name in excluded_names or not path.is_file():
+                      continue
+                  zf.write(path, relative.as_posix())
+          PY
+
+          SIZE="$(stat -c '%s' "$OUT")"
+          SHA="$(sha256sum "$OUT" | awk '{print $1}')"
+          echo "apk=$OUT" >> "$GITHUB_OUTPUT"
+          echo "channel=$CHANNEL" >> "$GITHUB_OUTPUT"
+          echo "size=$SIZE" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Write preview metadata
+        if: steps.package.outputs.channel == 'preview'
+        shell: bash
+        env:
+          SIZE: ${{ steps.package.outputs.size }}
+          SHA: ${{ steps.package.outputs.sha }}
+        run: |
+          cat > "versions/$VERSION_NAME/PREVIEW.md" <<EOF_PREVIEW
+          # B33R IPTV $VERSION_NAME preview
+
+          This APK contains the responsive beer-themed Smarters-style interface and the existing VLC/Media3 playback stack.
+
+          The interface reflows for portrait and landscape screens, adapts launch-card sizing, and constrains dynamic text to prevent overlapping and clipping.
+
+          It is signed with GitHub Actions' debug key because production signing secrets were not available. It cannot update a production-signed installation in place.
+
+          SHA-256: $SHA
+          Size: $SIZE bytes
+          EOF_PREVIEW
+
+      - name: Update production release metadata
+        if: steps.package.outputs.channel == 'release'
+        shell: bash
+        env:
+          SIZE: ${{ steps.package.outputs.size }}
+          SHA: ${{ steps.package.outputs.sha }}
+        run: |
+          python3 - <<'PY'
+          from datetime import date
+          from pathlib import Path
+          import json, os
+          version = os.environ["VERSION_NAME"]
+          code = int(os.environ["VERSION_CODE"])
+          size = int(os.environ["SIZE"])
+          sha = os.environ["SHA"]
+          release_date = date.today().isoformat()
+          base = f"https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/{version}"
+          notes = [
+              "Adds adaptive portrait, landscape, phone, tablet, and television layouts.",
+              "Reflows header and account information on narrow screens.",
+              "Prevents dynamic titles, categories, counts, and navigation labels from overlapping or clipping.",
+              "Preserves the VLC and Media3 playback stack and fallback behavior.",
+          ]
+          latest = {
+              "schemaVersion": 1,
+              "versionCode": code,
+              "versionName": version,
+              "releaseDate": release_date,
+              "minimumAndroid": "5.0",
+              "sizeBytes": size,
+              "sha256": sha,
+              "apkUrl": f"{base}/StreamDeck-IPTV-{version}.apk",
+              "notes": notes,
+          }
+          Path("versions/latest.json").write_text(json.dumps(latest, indent=2) + "\n")
+          history_path = Path("versions/history.json")
+          history = json.loads(history_path.read_text())
+          history["latest"] = version
+          history["releases"] = [r for r in history.get("releases", []) if r.get("versionName") != version]
+          history["releases"].insert(0, {k: latest[k] for k in ("versionCode", "versionName", "releaseDate", "sizeBytes", "apkUrl", "notes")})
+          history_path.write_text(json.dumps(history, indent=2) + "\n")
+          release = dict(latest)
+          release["sourceUrl"] = f"{base}/StreamDeck-IPTV-source-{version}.zip"
+          Path(f"versions/{version}/release.json").write_text(json.dumps(release, indent=2) + "\n")
+          PY
+
+      - name: Commit generated build to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "versions/$VERSION_NAME" versions/latest.json versions/history.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Build $VERSION_NAME responsive Smarters-style UI"
+          git push origin HEAD:main
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: StreamDeck-IPTV-${{ env.VERSION_NAME }}-${{ steps.package.outputs.channel }}
+          path: |
+            ${{ steps.package.outputs.apk }}
+            versions/${{ env.VERSION_NAME }}/StreamDeck-IPTV-source-${{ env.VERSION_NAME }}.zip
+          if-no-files-found: error
+          retention-days: 14
