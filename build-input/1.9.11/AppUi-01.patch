@@ -1,0 +1,188 @@
+diff --git a/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt b/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt
+@@ -430,12 +430,12 @@
+ 	                        letterSpacing = 2.4.sp,
+                     )
+                     Text(
+-                        text = "Pour into your library",
++                        text = "Your entertainment is on tap",
+                         style = MaterialTheme.typography.headlineMedium,
+                         fontWeight = FontWeight.SemiBold,
+                     )
+                     Text(
+-                        text = "Sign in with your username and password.",
++                        text = "Live TV, movies, and series with premium multi-engine playback.",
+                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                         style = MaterialTheme.typography.bodyMedium,
+                     )
+@@ -536,8 +536,8 @@
+                         )
+                     } else {
+                         Text(
+-                            text = "Login",
+-                            fontWeight = FontWeight.Bold,
++                            text = "ENTER B33R",
++                            fontWeight = FontWeight.Black,
+                             letterSpacing = 0.4.sp,
+                         )
+                     }
+@@ -882,6 +882,7 @@
+                 LibraryContent(
+                     state = state,
+                     wide = true,
++                    onSection = onSection,
+                     onCategory = onCategory,
+                     onSearchQuery = onSearchQuery,
+                     onItem = onItem,
+@@ -899,6 +900,7 @@
+                 LibraryContent(
+                     state = state,
+                     wide = false,
++                    onSection = onSection,
+                     onCategory = onCategory,
+                     onSearchQuery = onSearchQuery,
+                     onItem = onItem,
+@@ -923,6 +925,7 @@
+ private fun LibraryContent(
+     state: IptvUiState,
+     wide: Boolean,
++    onSection: (LibrarySection) -> Unit,
+     onCategory: (String?) -> Unit,
+     onSearchQuery: (String) -> Unit,
+     onItem: (StreamItem) -> Unit,
+@@ -1000,97 +1003,58 @@
+             .background(
+                 Brush.verticalGradient(
+                     colors = listOf(
+-                        Color(0xFF241307),
+-                        Color(0xFF120804),
++                        Color(0xFF321B09),
++                        Color(0xFF170B04),
++                        Color(0xFF080301),
+                         MaterialTheme.colorScheme.background,
+                     ),
+                 ),
+             ),
+     ) {
+-        Surface(
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .padding(horizontal = responsive.pagePadding, vertical = responsive.dp(14f)),
+-            shape = RoundedCornerShape(responsive.dp(20f)),
+-            color = Color(0xE61A0F08),
+-            border = BorderStroke(1.dp, Color(0xFF4B2D12)),
+-            shadowElevation = 8.dp,
+-        ) {
++        SmartersTopBar(
++            state = state,
++            wide = wide,
++            responsive = responsive,
++            onBackFromSeries = onBackFromSeries,
++            onLogout = onLogout,
++        )
++
++        if (state.seriesTitle == null) {
++            SmartersLaunchRow(
++                selected = state.section,
++                visibleItemCount = visibleItems.size,
++                responsive = responsive,
++                enabled = !state.loading && !state.openingItem,
++                onSection = onSection,
++            )
++            Spacer(Modifier.height(responsive.dp(14f)))
+             Row(
+-                modifier = Modifier.fillMaxWidth().padding(
+-                    horizontal = responsive.dp(14f),
+-                    vertical = responsive.dp(12f),
+-                ),
+-                verticalAlignment = Alignment.CenterVertically,
++                modifier = Modifier
++                    .fillMaxWidth()
++                    .padding(horizontal = responsive.pagePadding),
++                verticalAlignment = Alignment.Bottom,
+             ) {
+-                if (state.seriesTitle != null) {
+-                    IconButton(onClick = onBackFromSeries) {
+-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+-                    }
+-                }
+-                Column(
+-                    modifier = Modifier.weight(1f),
+-                ) {
++                Column(Modifier.weight(1f)) {
+                     Text(
+-	                        text = "B33R IPTV",
+-	                        color = MaterialTheme.colorScheme.primary,
+-	                        fontSize = responsive.sp(10f),
+-	                        fontWeight = FontWeight.Bold,
+-                        letterSpacing = 2.6.sp,
++                        text = "NOW POURING",
++                        color = MaterialTheme.colorScheme.primary,
++                        fontSize = responsive.sp(9f),
++                        fontWeight = FontWeight.Black,
++                        letterSpacing = 2.2.sp,
+                     )
+                     Text(
+-                        text = state.seriesTitle ?: state.section.title,
+-                        style = if (wide) {
+-                            MaterialTheme.typography.headlineLarge
+-                        } else {
+-                            MaterialTheme.typography.headlineSmall
+-                        },
+-                        fontWeight = FontWeight.SemiBold,
+-                        letterSpacing = (-0.5).sp,
+-                        maxLines = 1,
+-                        overflow = TextOverflow.Ellipsis,
++                        text = state.section.title,
++                        fontSize = responsive.sp(if (wide) 24f else 20f),
++                        fontWeight = FontWeight.Bold,
+                     )
+                 }
+-                if (state.accountUsername.isNotBlank()) {
+-	                    Surface(
+-	                        modifier = Modifier.padding(start = responsive.dp(8f))
+-	                            .widthIn(max = responsive.dp(170f)),
+-	                        shape = RoundedCornerShape(responsive.dp(12f)),
+-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.09f),
+-                        border = BorderStroke(
+-                            1.dp,
+-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.22f),
+-                        ),
+-                    ) {
+-                        Column(
+-	                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+-                            horizontalAlignment = Alignment.End,
+-                        ) {
+-                            Text(
+-                                text = state.accountUsername,
+-                                color = MaterialTheme.colorScheme.onSurface,
+-                                fontWeight = FontWeight.SemiBold,
+-                                maxLines = 1,
+-                                overflow = TextOverflow.Ellipsis,
+-                                style = MaterialTheme.typography.labelLarge,
+-                            )
+-                            Text(
+-                                text = formatAccountExpiration(
+-                                    state.accountExpiresAtEpochSeconds,
+-                                ),
+-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+-                                maxLines = 1,
+-                                style = MaterialTheme.typography.labelSmall,
+-                            )
+-                        }
+-                    }
+-                }
+-                onLogout?.let {
+-                    IconButton(onClick = it) {
+-                        Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Log out")
+-                    }
+-                }
++                Text(
++                    text = "${visibleItems.size} items",
++                    color = MaterialTheme.colorScheme.onSurfaceVariant,
++                    style = MaterialTheme.typography.labelLarge,
++                )
+             }
++            Spacer(Modifier.height(responsive.dp(10f)))
+         }
+ 
+ 	        if (state.seriesTitle == null && state.categories.isNotEmpty()) {
