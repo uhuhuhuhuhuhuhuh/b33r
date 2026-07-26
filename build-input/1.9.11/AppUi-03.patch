@@ -1,0 +1,47 @@
+diff --git a/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt b/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt
+@@ -1299,9 +1520,9 @@
+     onClick: () -> Unit,
+ ) {
+     var focused by remember { mutableStateOf(false) }
+-    val scale by animateFloatAsState(if (focused) 1.035f else 1f, label = "cardScale")
++    val scale by animateFloatAsState(if (focused) 1.055f else 1f, label = "cardScale")
+     val container by animateColorAsState(
+-        if (focused) Color(0xFF3A2412) else Color(0xFF1A0F08),
++        if (focused) Color(0xFF4A2B10) else Color(0xFF1B0E06),
+         label = "cardColor",
+     )
+     val posterRatio = if (item.kind == ContentKind.LIVE) 16f / 9f else 2f / 3f
+@@ -1313,12 +1534,12 @@
+             .fillMaxWidth()
+             .scale(scale)
+             .onFocusChanged { focused = it.isFocused },
+-        shape = RoundedCornerShape(12.dp),
++        shape = RoundedCornerShape(responsive.dp(16f)),
+         colors = CardDefaults.cardColors(containerColor = container),
+         border = if (focused) {
+-            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
++            BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
+         } else {
+-            BorderStroke(1.dp, Color(0xFF3A2412))
++            BorderStroke(1.dp, Color(0xFF4A2A10))
+         },
+     ) {
+         Column {
+@@ -1449,7 +1670,7 @@
+             .padding(responsive.dp(10f))
+             .width(responsive.railWidth)
+             .clip(RoundedCornerShape(responsive.dp(22f))),
+-        containerColor = Color(0xEB1A0F08),
++        containerColor = Color(0xF20F0703),
+         header = {
+             Surface(
+                 modifier = Modifier.padding(vertical = responsive.dp(18f))
+@@ -1519,7 +1740,7 @@
+             .padding(WindowInsets.navigationBars.asPaddingValues())
+             .padding(horizontal = responsive.dp(10f), vertical = responsive.dp(8f))
+             .clip(RoundedCornerShape(responsive.dp(20f))),
+-        containerColor = Color(0xF21A0F08),
++        containerColor = Color(0xFA0F0703),
+     ) {
+         LibrarySection.entries.forEach { section ->
+             NavigationBarItem(
