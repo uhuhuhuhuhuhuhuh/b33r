@@ -1,0 +1,79 @@
+name: Validate B33R IPTV 1.9.13 UI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "build-input/1.9.13/VALIDATE.md"
+      - ".github/workflows/validate-1.9.13-ui.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Transform and compile
+        id: validate
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          SRC="$RUNNER_TEMP/b33r-1.9.13-validation"
+          LOG="$GITHUB_WORKSPACE/build-input/1.9.13/VALIDATION.log"
+          rm -rf "$SRC" "$LOG"
+          mkdir -p "$SRC"
+          {
+            set -euxo pipefail
+            unzip -q versions/1.9.12/StreamDeck-IPTV-source-1.9.12.zip -d "$SRC"
+            cd "$SRC"
+            python3 "$GITHUB_WORKSPACE/build-input/1.9.13/apply_media_hub_ui.py"
+            python3 - <<'PY'
+          from pathlib import Path
+          import re
+          path = Path("app/build.gradle.kts")
+          text = path.read_text()
+          text, count_code = re.subn(r'versionCode\s*=\s*27', 'versionCode = 28', text, count=1)
+          text, count_name = re.subn(r'versionName\s*=\s*"1\.9\.12"', 'versionName = "1.9.13"', text, count=1)
+          if count_code != 1 or count_name != 1:
+              raise SystemExit("Could not update version metadata")
+          path.write_text(text)
+          PY
+            chmod +x gradlew
+            SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+            SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+            yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+            "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+            ./gradlew --no-daemon --stacktrace assembleDebug
+          } >"$LOG" 2>&1
+
+      - name: Record result
+        shell: bash
+        env:
+          OUTCOME: ${{ steps.validate.outcome }}
+        run: |
+          if [[ "$OUTCOME" == "success" ]]; then STATUS="passed"; else STATUS="failed"; fi
+          cat > build-input/1.9.13/VALIDATION.md <<EOF
+          # 1.9.13 UI validation
+
+          Status: **$STATUS**
+
+          The uploaded-app-inspired media-hub transformation was applied to the 1.9.12 source and compiled as an Android debug APK.
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-input/1.9.13/VALIDATION.md build-input/1.9.13/VALIDATION.log
+          git commit -m "Record 1.9.13 UI validation" || exit 0
+          git push origin HEAD:main
