@@ -1,0 +1,44 @@
+name: Extract B33R IPTV 1.9.13 UI reference
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "build-input/1.9.13/EXTRACT.md"
+      - ".github/workflows/extract-1.9.13-ui-reference.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Extract current UI source
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/b33r-1.9.13-reference"
+          OUT="$GITHUB_WORKSPACE/build-input/1.9.13/reference-source"
+          rm -rf "$SRC" "$OUT"
+          mkdir -p "$SRC" "$OUT"
+          unzip -q versions/1.9.12/StreamDeck-IPTV-source-1.9.12.zip -d "$SRC"
+          cp "$SRC/app/build.gradle.kts" "$OUT/build.gradle.kts"
+          cp "$SRC/app/src/main/java/com/streamdeck/iptv/IptvViewModel.kt" "$OUT/IptvViewModel.kt"
+          cp -R "$SRC/app/src/main/java/com/streamdeck/iptv/ui" "$OUT/ui"
+
+      - name: Commit extracted reference
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-input/1.9.13/reference-source
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Extract 1.9.12 UI for 1.9.13 redesign"
+          git push origin HEAD:main
