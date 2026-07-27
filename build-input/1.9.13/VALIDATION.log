@@ -1,74 +1,0 @@
-+ unzip -q versions/1.9.12/StreamDeck-IPTV-source-1.9.12.zip -d /home/runner/work/_temp/b33r-1.9.13-validation
-+ cd /home/runner/work/_temp/b33r-1.9.13-validation
-+ python3 /home/runner/work/b33r/b33r/build-input/1.9.13/apply_media_hub_ui.py
-+ python3 -
-+ chmod +x gradlew
-+ SDK_ROOT=/usr/local/lib/android/sdk
-++ find /usr/local/lib/android/sdk/cmdline-tools -type f -name sdkmanager
-++ sort
-++ tail -n 1
-+ SDKMANAGER=/usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager
-+ yes
-+ /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
-yes: standard output: Broken pipe
-+ true
-+ /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager platform-tools 'platforms;android-36' 'build-tools;36.0.0'
-Loading package information...                                                  Loading local repository...                                                     [                                       ] 3% Loading local repository...        [                                       ] 3% Fetch remote repository...         [=                                      ] 3% Fetch remote repository...         [=                                      ] 4% Fetch remote repository...         [=                                      ] 5% Fetch remote repository...         [==                                     ] 5% Fetch remote repository...         [==                                     ] 6% Fetch remote repository...         [==                                     ] 7% Fetch remote repository...         [==                                     ] 7% Computing updates...               [===                                    ] 8% Computing updates...               [===                                    ] 10% Computing updates...              [=======================================] 100% Computing updates...             
-
-+ ./gradlew --no-daemon --stacktrace assembleDebug
-To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.5.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
-Daemon will be stopped at the end of the build 
-Calculating task graph as no cached configuration is available for tasks: assembleDebug
-> Task :app:preBuild UP-TO-DATE
-> Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:preDebugBuild UP-TO-DATE
-> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
-> Task :app:generateDebugBuildConfig
-> Task :app:generateDebugResources
-> Task :app:packageDebugResources
-> Task :app:javaPreCompileDebug
-> Task :app:processDebugNavigationResources
-> Task :app:mergeDebugAssets
-> Task :app:compressDebugAssets
-> Task :app:checkDebugDuplicateClasses
-> Task :app:mergeLibDexDebug
-> Task :app:checkDebugAarMetadata
-> Task :app:mapDebugSourceSetPaths
-> Task :app:compileDebugNavigationResources
-> Task :app:parseDebugLocalResources
-> Task :app:generateDebugRFile
-> Task :app:desugarDebugFileDependencies
-> Task :app:generateDebugGlobalSynthetics
-> Task :app:createDebugCompatibleScreenManifests
-> Task :app:extractDeepLinksDebug
-> Task :app:processDebugMainManifest
-> Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
-> Task :app:mergeDebugJniLibFolders
-> Task :app:mergeDebugResources
-> Task :app:mergeDebugNativeLibs
-> Task :app:stripDebugDebugSymbols
-> Task :app:processDebugResources
-> Task :app:writeDebugAppMetadata
-> Task :app:writeDebugSigningConfigVersions
-> Task :app:validateSigningDebug
-> Task :app:mergeExtDexDebug
-> Task :app:compileDebugKotlin
-w: file:///home/runner/work/_temp/b33r-1.9.13-validation/app/src/main/java/com/streamdeck/iptv/data/CredentialStore.kt:6:8 'class KeyPairGeneratorSpec : Any, AlgorithmParameterSpec' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/_temp/b33r-1.9.13-validation/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt:1925:26 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
-w: file:///home/runner/work/_temp/b33r-1.9.13-validation/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt:229:56 'static field FEATURE_TELEVISION: String' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/_temp/b33r-1.9.13-validation/app/src/main/java/com/streamdeck/iptv/ui/VlcPlayer.kt:93:26 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
-
-> Task :app:processDebugJavaRes
-> Task :app:mergeDebugJavaResource
-> Task :app:compileDebugJavaWithJavac
-> Task :app:dexBuilderDebug
-> Task :app:mergeProjectDexDebug
-> Task :app:packageDebug
-> Task :app:assembleDebug
-> Task :app:createDebugApkListingFileRedirect
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/validate-1785174657701.json
-
-BUILD SUCCESSFUL in 1m 6s
-38 actionable tasks: 38 executed
-Configuration cache entry stored.
