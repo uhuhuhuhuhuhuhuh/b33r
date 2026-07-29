@@ -1,0 +1,85 @@
+             }
+@@ -1771,51 +1784,7 @@
+                 unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+             ),
+         )
+-        Spacer(Modifier.height(responsive.dp(12f)))
+-    }
+-}
+-
+-@Composable
+-private fun SectionBar(
+-    selected: LibrarySection,
+-    onSection: (LibrarySection) -> Unit,
+-    responsive: ResponsiveLayout,
+-    selectedItemFocusRequester: FocusRequester,
+-) {
+-    NavigationBar(
+-        modifier = Modifier
+-            .padding(WindowInsets.navigationBars.asPaddingValues())
+-            .padding(horizontal = responsive.dp(10f), vertical = responsive.dp(8f))
+-            .clip(RoundedCornerShape(responsive.dp(20f))),
+-        containerColor = Color(0xFA0E0E0E),
+-    ) {
+-        LibrarySection.entries.forEach { section ->
+-            NavigationBarItem(
+-                modifier = if (selected == section) {
+-                    Modifier.focusRequester(selectedItemFocusRequester)
+-                } else {
+-                    Modifier
+-                },
+-                selected = selected == section,
+-                onClick = { onSection(section) },
+-                icon = { Icon(section.icon(), contentDescription = null) },
+-                label = {
+-                    Text(
+-                        text = section.shortTitle(),
+-                        fontSize = responsive.sp(9f),
+-                        maxLines = 1,
+-                        overflow = TextOverflow.Ellipsis,
+-                    )
+-                },
+-                colors = NavigationBarItemDefaults.colors(
+-                    selectedIconColor = MaterialTheme.colorScheme.primary,
+-                    selectedTextColor = MaterialTheme.colorScheme.primary,
+-                    indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.16f),
+-                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+-                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+-                ),
+-            )
+-        }
++        Spacer(Modifier.height(responsive.dp(9f)))
+     }
+ }
+ 
+diff -urN '--exclude=*.png' '--exclude=*.webp' b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt b33r-src/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt
+--- b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt	2026-07-29 18:28:26.000000000 +0000
++++ b33r-src/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt	2026-07-29 19:33:43.707635645 +0000
+@@ -127,27 +127,27 @@
+     )
+     val uiScale = if (isTelevision) {
+         when {
+-            effectiveTelevisionShortSidePx >= 1_800 -> 1.38f
+-            effectiveTelevisionShortSidePx >= 1_000 -> 1.25f
+-            effectiveTelevisionShortSidePx >= 700 -> 1.12f
+-            else -> 1.04f
++            effectiveTelevisionShortSidePx >= 1_800 -> 1.16f
++            effectiveTelevisionShortSidePx >= 1_000 -> 1.08f
++            effectiveTelevisionShortSidePx >= 700 -> 1.02f
++            else -> 0.96f
+         }
+     } else {
+         when {
+-            shortestWidthDp >= 840 -> 1.14f
+-            shortestWidthDp >= 600 -> 1.08f
+-            shortestWidthDp < 340 -> 0.92f
+-            else -> 1.00f
++            shortestWidthDp >= 840 -> 1.02f
++            shortestWidthDp >= 600 -> 0.98f
++            shortestWidthDp < 340 -> 0.88f
++            else -> 0.94f
+         }
+     }
+     val textScale = if (isTelevision) {
+-        (uiScale * 1.08f).coerceAtMost(1.48f)
++        (uiScale * 1.02f).coerceAtMost(1.18f)
