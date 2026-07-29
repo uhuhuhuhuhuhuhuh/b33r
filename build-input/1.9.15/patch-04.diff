@@ -1,0 +1,85 @@
+                         containerColor = MaterialTheme.colorScheme.primary,
+                         contentColor = MaterialTheme.colorScheme.onPrimary,
+@@ -929,12 +943,6 @@
+                     sectionNavigationFocusRequester = sectionNavigationFocusRequester,
+                     modifier = Modifier.weight(1f),
+                 )
+-                SectionBar(
+-                    selected = state.section,
+-                    onSection = onSection,
+-                    responsive = responsive,
+-                    selectedItemFocusRequester = sectionNavigationFocusRequester,
+-                )
+             }
+         }
+     }
+@@ -1046,16 +1054,17 @@
+                 visibleItemCount = visibleItems.size,
+                 responsive = responsive,
+                 enabled = !state.loading && !state.openingItem,
++                selectedItemFocusRequester = sectionNavigationFocusRequester,
+                 onSection = onSection,
+             )
+-            Spacer(Modifier.height(responsive.dp(14f)))
++            Spacer(Modifier.height(responsive.dp(8f)))
+             SmartersSectionHeader(
+                 sectionTitle = state.section.title,
+                 itemCount = visibleItems.size,
+                 wide = wide,
+                 responsive = responsive,
+             )
+-            Spacer(Modifier.height(responsive.dp(10f)))
++            Spacer(Modifier.height(responsive.dp(8f)))
+         }
+ 
+ 	        if (state.seriesTitle == null && state.categories.isNotEmpty()) {
+@@ -1063,7 +1072,7 @@
+ 	                contentPadding = androidx.compose.foundation.layout.PaddingValues(
+ 	                    horizontal = responsive.pagePadding,
+ 	                ),
+-	                horizontalArrangement = Arrangement.spacedBy(responsive.dp(10f)),
++	                horizontalArrangement = Arrangement.spacedBy(responsive.dp(6f)),
+ 	            ) {
+                 item {
+                     FilterChip(
+@@ -1094,7 +1103,7 @@
+                     )
+                 }
+             }
+-	            Spacer(Modifier.height(responsive.dp(12f)))
++	            Spacer(Modifier.height(responsive.dp(9f)))
+ 	        }
+ 
+         OutlinedTextField(
+@@ -1170,7 +1179,7 @@
+                 },
+             ),
+         )
+-	        Spacer(Modifier.height(responsive.dp(12f)))
++	        Spacer(Modifier.height(responsive.dp(9f)))
+ 
+         state.error?.let { message ->
+             Text(
+@@ -1195,7 +1204,7 @@
+ 	                        bottom = responsive.dp(24f),
+ 	                    ),
+ 	                    horizontalArrangement = Arrangement.spacedBy(responsive.gridSpacing),
+-	                    verticalArrangement = Arrangement.spacedBy(responsive.dp(22f)),
++	                    verticalArrangement = Arrangement.spacedBy(responsive.dp(14f)),
+                 ) {
+                     itemsIndexed(
+                         items = visibleItems,
+@@ -1255,8 +1264,8 @@
+             Column(verticalArrangement = Arrangement.spacedBy(responsive.dp(2f))) {
+                 Text(
+                     text = sectionTitle,
+-                    fontSize = responsive.sp(if (wide) 25f else 21f),
+-                    lineHeight = responsive.sp(if (wide) 29f else 25f),
++                    fontSize = responsive.sp(if (wide) 18f else 16f),
++                    lineHeight = responsive.sp(if (wide) 22f else 20f),
+                     fontWeight = FontWeight.SemiBold,
+                     maxLines = 2,
+                     overflow = TextOverflow.Ellipsis,
+@@ -1273,13 +1282,13 @@
+             Row(
+                 modifier = Modifier.fillMaxWidth(),

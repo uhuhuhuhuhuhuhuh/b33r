@@ -1,0 +1,136 @@
+name: Validate B33R IPTV 1.9.15
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/validate-iptv-1.9.15.yml"
+      - "build-input/1.9.15/**"
+
+permissions:
+  contents: read
+
+env:
+  VERSION_NAME: "1.9.15"
+  VERSION_CODE: "30"
+  SOURCE_ARCHIVE: "versions/1.9.14/StreamDeck-IPTV-source-1.9.14.zip"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          test -n "$SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+          echo "BUILD_TOOLS=$SDK_ROOT/build-tools/36.0.0" >> "$GITHUB_ENV"
+
+      - name: Prepare compact 1.9.15 source
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/b33r-iptv-$VERSION_NAME"
+          rm -rf "$SRC"
+          mkdir -p "$SRC"
+          python3 - "$SOURCE_ARCHIVE" "$SRC" <<'PY'
+          import pathlib, sys, zipfile
+          archive = pathlib.Path(sys.argv[1])
+          target = pathlib.Path(sys.argv[2])
+          with zipfile.ZipFile(archive) as zf:
+              for info in zf.infolist():
+                  name = info.filename.replace("\\", "/").lstrip("/")
+                  if not name:
+                      continue
+                  destination = target / name
+                  if info.is_dir() or name.endswith("/"):
+                      destination.mkdir(parents=True, exist_ok=True)
+                  else:
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      destination.write_bytes(zf.read(info))
+          PY
+          cat build-input/1.9.15/patch-*.diff > "$RUNNER_TEMP/b33r-1.9.15.patch"
+          patch -d "$SRC" -p1 --forward --batch < "$RUNNER_TEMP/b33r-1.9.15.patch"
+          python3 -m pip install --quiet pillow
+          python3 build-input/1.9.15/generate_b33r_icon.py "$SRC"
+          chmod +x "$SRC/gradlew"
+          echo "src=$SRC" >> "$GITHUB_OUTPUT"
+
+      - name: Create disposable validation key
+        shell: bash
+        run: |
+          set -euo pipefail
+          KEYSTORE="$RUNNER_TEMP/validation.keystore"
+          keytool -genkeypair -noprompt -keystore "$KEYSTORE" -storepass validation -keypass validation -alias validation -keyalg RSA -keysize 2048 -validity 365 -dname "CN=B33R Validation"
+          echo "B33R_RELEASE_STORE_FILE=$KEYSTORE" >> "$GITHUB_ENV"
+          echo "B33R_RELEASE_STORE_PASSWORD=validation" >> "$GITHUB_ENV"
+          echo "B33R_RELEASE_KEY_ALIAS=validation" >> "$GITHUB_ENV"
+          echo "B33R_RELEASE_KEY_PASSWORD=validation" >> "$GITHUB_ENV"
+
+      - name: Build release APK
+        working-directory: ${{ steps.source.outputs.src }}
+        shell: bash
+        run: ./gradlew --no-daemon --stacktrace assembleRelease
+
+      - name: Verify build metadata
+        shell: bash
+        env:
+          SRC: ${{ steps.source.outputs.src }}
+        run: |
+          set -euo pipefail
+          APK="$SRC/app/build/outputs/apk/release/app-release.apk"
+          test -s "$APK"
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK"
+          "$BUILD_TOOLS/aapt" dump badging "$APK" | tee "$RUNNER_TEMP/badging.txt"
+          grep -q "package: name='com.streamdeck.iptv' versionCode='30' versionName='1.9.15'" "$RUNNER_TEMP/badging.txt"
+
+      - name: Package validation artifact
+        id: package
+        shell: bash
+        env:
+          SRC: ${{ steps.source.outputs.src }}
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/b33r-1.9.15-validation"
+          mkdir -p "$OUT"
+          cp "$SRC/app/build/outputs/apk/release/app-release.apk" "$OUT/StreamDeck-IPTV-1.9.15-validation.apk"
+          python3 - "$SRC" "$OUT/StreamDeck-IPTV-source-1.9.15.zip" <<'PY'
+          import pathlib, sys, zipfile
+          source = pathlib.Path(sys.argv[1])
+          output = pathlib.Path(sys.argv[2])
+          with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in sorted(source.rglob("*")):
+                  relative = path.relative_to(source)
+                  if any(part in {".gradle", "build"} for part in relative.parts):
+                      continue
+                  if path.name in {"local.properties", "validation.keystore"} or not path.is_file():
+                      continue
+                  zf.write(path, relative.as_posix())
+          PY
+          echo "out=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: b33r-1.9.15-validation
+          path: ${{ steps.package.outputs.out }}/*
+          if-no-files-found: error
+          retention-days: 7

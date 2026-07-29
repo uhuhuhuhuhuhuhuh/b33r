@@ -1,0 +1,85 @@
+         }
+     }
+ 
++    val pageScrollState = rememberScrollState()
++    val loginLogoSize = responsive.dp(if (isTelevision) 68f else 50f)
++    val loginCornerRadius = responsive.dp(if (isTelevision) 22f else 20f)
++    val contentHorizontalPadding = responsive.dp(if (isTelevision) 30f else 22f)
++    val contentVerticalPadding = responsive.dp(if (isTelevision) 26f else 22f)
++    val contentSpacing = responsive.dp(if (isTelevision) 14f else 12f)
++    val fieldMinimumHeight = responsive.dp(if (isTelevision) 56f else 50f)
++    val cardWidthFraction = if (isTelevision) 0.64f else 0.90f
++
+     Box(
+         modifier = Modifier
+             .fillMaxSize()
+@@ -393,67 +399,73 @@
+                 ),
+             )
+             .padding(WindowInsets.safeDrawing.asPaddingValues())
+-            .imePadding()
+-            .verticalScroll(rememberScrollState())
++            // Keep the phone login card fixed when the IME opens. Android is
++            // configured with adjustNothing, and only television layouts use
++            // a scroll container for unusually short compatibility windows.
++            .then(
++                if (isTelevision) {
++                    Modifier.verticalScroll(pageScrollState)
++                } else {
++                    Modifier
++                },
++            )
+             .padding(
+-                horizontal = responsive.dp(24f),
+-                vertical = responsive.dp(16f),
++                horizontal = responsive.dp(if (isTelevision) 24f else 16f),
++                vertical = responsive.dp(if (isTelevision) 18f else 12f),
+             ),
+         contentAlignment = Alignment.Center,
+     ) {
+         Surface(
+             modifier = Modifier
+                 .widthIn(max = responsive.loginMaxWidth)
+-                .fillMaxWidth(0.92f),
+-            shape = RoundedCornerShape(responsive.dp(26f)),
++                .fillMaxWidth(cardWidthFraction),
++            shape = RoundedCornerShape(loginCornerRadius),
+             color = Color(0xF2171717),
+-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.34f)),
+-            tonalElevation = 8.dp,
+-            shadowElevation = 18.dp,
++            border = BorderStroke(
++                responsive.dp(if (isTelevision) 1.5f else 1f),
++                MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
++            ),
++            tonalElevation = if (isTelevision) 12.dp else 8.dp,
++            shadowElevation = if (isTelevision) 24.dp else 18.dp,
+         ) {
+             Column(
+                 modifier = Modifier.padding(
+-                    horizontal = responsive.dp(28f),
+-                    vertical = responsive.dp(30f),
++                    horizontal = contentHorizontalPadding,
++                    vertical = contentVerticalPadding,
+                 ),
+-                verticalArrangement = Arrangement.spacedBy(responsive.dp(16f)),
++                verticalArrangement = Arrangement.spacedBy(contentSpacing),
+             ) {
+-                Surface(
+-                    modifier = Modifier.size(responsive.dp(54f)),
+-                    shape = RoundedCornerShape(responsive.dp(16f)),
+-                    color = Color(0xFF202020),
+-                    border = BorderStroke(
+-                        1.dp,
+-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
++                Image(
++                    painter = painterResource(R.drawable.b33r_login_logo),
++                    contentDescription = "B33R IPTV",
++                    modifier = Modifier
++                        .size(loginLogoSize)
++                        .clip(RoundedCornerShape(responsive.dp(if (isTelevision) 18f else 14f))),
++                    contentScale = ContentScale.Crop,
++                )
++                Column(
++                    verticalArrangement = Arrangement.spacedBy(
++                        responsive.dp(if (isTelevision) 5f else 3f),

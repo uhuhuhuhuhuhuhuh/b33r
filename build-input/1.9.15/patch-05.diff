@@ -1,0 +1,85 @@
+                 verticalAlignment = Alignment.Bottom,
+-                horizontalArrangement = Arrangement.spacedBy(responsive.dp(12f)),
++                horizontalArrangement = Arrangement.spacedBy(responsive.dp(6f)),
+             ) {
+                 Text(
+                     text = sectionTitle,
+                     modifier = Modifier.weight(1f),
+-                    fontSize = responsive.sp(if (wide) 25f else 21f),
+-                    lineHeight = responsive.sp(if (wide) 29f else 25f),
++                    fontSize = responsive.sp(if (wide) 18f else 16f),
++                    lineHeight = responsive.sp(if (wide) 22f else 20f),
+                     fontWeight = FontWeight.SemiBold,
+                     maxLines = 2,
+                     overflow = TextOverflow.Ellipsis,
+@@ -1320,9 +1329,9 @@
+                     .fillMaxWidth()
+                     .padding(
+                         horizontal = responsive.pagePadding,
+-                        vertical = responsive.dp(if (compact) 10f else 12f),
++                        vertical = responsive.dp(if (compact) 8f else 9f),
+                     ),
+-                verticalArrangement = Arrangement.spacedBy(responsive.dp(7f)),
++                verticalArrangement = Arrangement.spacedBy(responsive.dp(5f)),
+             ) {
+                 Row(
+                     modifier = Modifier.fillMaxWidth(),
+@@ -1337,16 +1346,16 @@
+                         text = "B33R",
+                         color = MaterialTheme.colorScheme.primary,
+                         fontWeight = FontWeight.Black,
+-                        fontSize = responsive.sp(if (wide) 21f else 18f),
++                        fontSize = responsive.sp(if (wide) 18f else 16f),
+                         letterSpacing = 1.6.sp,
+                         maxLines = 1,
+                     )
+-                    Spacer(Modifier.width(responsive.dp(18f)))
++                    Spacer(Modifier.width(responsive.dp(12f)))
+                     Column(modifier = Modifier.weight(1f)) {
+                         Text(
+                             text = state.seriesTitle ?: state.section.title,
+-                            fontSize = responsive.sp(if (wide) 20f else 17f),
+-                            lineHeight = responsive.sp(if (wide) 24f else 21f),
++                            fontSize = responsive.sp(if (wide) 17f else 15f),
++                            lineHeight = responsive.sp(if (wide) 21f else 19f),
+                             fontWeight = FontWeight.SemiBold,
+                             maxLines = 1,
+                             overflow = TextOverflow.Ellipsis,
+@@ -1423,6 +1432,7 @@
+     visibleItemCount: Int,
+     responsive: ResponsiveLayout,
+     enabled: Boolean,
++    selectedItemFocusRequester: FocusRequester,
+     onSection: (LibrarySection) -> Unit,
+ ) {
+     val sections = listOf(
+@@ -1435,9 +1445,9 @@
+     LazyRow(
+         contentPadding = androidx.compose.foundation.layout.PaddingValues(
+             horizontal = responsive.pagePadding,
+-            vertical = responsive.dp(12f),
++            vertical = responsive.dp(8f),
+         ),
+-        horizontalArrangement = Arrangement.spacedBy(responsive.dp(8f)),
++        horizontalArrangement = Arrangement.spacedBy(responsive.dp(6f)),
+     ) {
+         items(sections, key = { it.name }) { section ->
+             SmartersLaunchCard(
+@@ -1445,8 +1455,8 @@
+                 selected = selected == section,
+                 count = if (selected == section) visibleItemCount else null,
+                 responsive = responsive,
+-                compact = true,
+                 enabled = enabled,
++                focusRequester = if (selected == section) selectedItemFocusRequester else null,
+                 onClick = { onSection(section) },
+             )
+         }
+@@ -1459,8 +1469,8 @@
+     selected: Boolean,
+     count: Int?,
+     responsive: ResponsiveLayout,
+-    compact: Boolean,
+     enabled: Boolean,
++    focusRequester: FocusRequester? = null,
+     onClick: () -> Unit,

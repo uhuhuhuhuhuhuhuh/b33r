@@ -1,0 +1,85 @@
+                     ),
+                 ) {
+-                    Box(contentAlignment = Alignment.Center) {
+-                        Text(
+-	                            text = "b33r",
+-	                            color = MaterialTheme.colorScheme.primary,
+-	                            fontWeight = FontWeight.Black,
+-	                            fontSize = responsive.sp(14f),
+-	                            letterSpacing = 0.2.sp,
+-	                        )
+-                    }
+-                }
+-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                     Text(
+-	                        text = "B33R IPTV",
+-	                        color = MaterialTheme.colorScheme.primary,
+-	                        fontWeight = FontWeight.Bold,
+-	                        fontSize = responsive.sp(12f),
+-	                        letterSpacing = 2.4.sp,
++                        text = "B33R IPTV",
++                        color = MaterialTheme.colorScheme.primary,
++                        fontWeight = FontWeight.Bold,
++                        fontSize = responsive.sp(if (isTelevision) 13f else 11f),
++                        letterSpacing = if (isTelevision) 2.4.sp else 2.0.sp,
+                     )
+                     Text(
+                         text = "Your media, one place",
+-                        style = MaterialTheme.typography.headlineMedium,
++                        fontSize = responsive.sp(if (isTelevision) 26f else 22f),
++                        lineHeight = responsive.sp(if (isTelevision) 31f else 27f),
+                         fontWeight = FontWeight.SemiBold,
+                     )
+                     Text(
+                         text = "Browse live channels, movies, and series in one focused media library.",
+                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+-                        style = MaterialTheme.typography.bodyMedium,
++                        fontSize = responsive.sp(if (isTelevision) 14f else 12.5f),
++                        lineHeight = responsive.sp(if (isTelevision) 20f else 18f),
+                     )
+                 }
+                 OutlinedTextField(
+@@ -464,6 +476,7 @@
+                     },
+                     modifier = Modifier
+                         .fillMaxWidth()
++                        .heightIn(min = fieldMinimumHeight)
+                         .focusRequester(usernameFocusRequester)
+                         .onFocusChanged {
+                             if (!it.isFocused) usernameEditing = false
+@@ -480,7 +493,7 @@
+                     enabled = !loading,
+                     readOnly = isTelevision && !usernameEditing,
+                     singleLine = true,
+-	                    shape = RoundedCornerShape(responsive.dp(14f)),
++	                    shape = RoundedCornerShape(responsive.dp(11f)),
+                     label = { Text("Username") },
+                     colors = OutlinedTextFieldDefaults.colors(
+                         focusedBorderColor = MaterialTheme.colorScheme.primary,
+@@ -504,6 +517,7 @@
+                     },
+                     modifier = Modifier
+                         .fillMaxWidth()
++                        .heightIn(min = fieldMinimumHeight)
+                         .focusRequester(passwordFocusRequester)
+                         .onFocusChanged {
+                             if (!it.isFocused) passwordEditing = false
+@@ -520,7 +534,7 @@
+                     enabled = !loading,
+                     readOnly = isTelevision && !passwordEditing,
+                     singleLine = true,
+-	                    shape = RoundedCornerShape(responsive.dp(14f)),
++	                    shape = RoundedCornerShape(responsive.dp(11f)),
+                     label = { Text("Password") },
+                     colors = OutlinedTextFieldDefaults.colors(
+                         focusedBorderColor = MaterialTheme.colorScheme.primary,
+@@ -536,9 +550,9 @@
+ 	                    onClick = submit,
+ 	                    modifier = Modifier
+                             .fillMaxWidth()
+-                            .heightIn(min = responsive.dp(54f)),
++                            .heightIn(min = fieldMinimumHeight),
+ 	                    enabled = !loading,
+-	                    shape = RoundedCornerShape(responsive.dp(14f)),
++	                    shape = RoundedCornerShape(responsive.dp(11f)),
+                     colors = ButtonDefaults.buttonColors(

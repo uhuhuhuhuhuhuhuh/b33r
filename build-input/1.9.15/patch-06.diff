@@ -1,0 +1,85 @@
+ ) {
+     var focused by remember { mutableStateOf(false) }
+@@ -1478,8 +1488,11 @@
+         onClick = onClick,
+         enabled = enabled,
+         modifier = Modifier
+-            .width(responsive.dp(if (responsive.isTelevision) 158f else 132f))
+-            .height(responsive.dp(if (responsive.isTelevision) 58f else 52f))
++            .width(responsive.dp(if (responsive.isTelevision) 140f else 118f))
++            .height(responsive.dp(if (responsive.isTelevision) 50f else 46f))
++            .then(
++                if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier,
++            )
+             .scale(scale)
+             .onFocusChanged { focused = it.isFocused },
+         shape = RoundedCornerShape(responsive.dp(7f)),
+@@ -1496,23 +1509,23 @@
+         Row(
+             modifier = Modifier
+                 .fillMaxSize()
+-                .padding(horizontal = responsive.dp(12f)),
++                .padding(horizontal = responsive.dp(10f)),
+             verticalAlignment = Alignment.CenterVertically,
+-            horizontalArrangement = Arrangement.spacedBy(responsive.dp(9f)),
++            horizontalArrangement = Arrangement.spacedBy(responsive.dp(7f)),
+         ) {
+             Icon(
+                 imageVector = section.icon(),
+                 contentDescription = null,
+                 tint = if (focused) Color(0xFF111111) else MaterialTheme.colorScheme.primary,
+-                modifier = Modifier.size(responsive.dp(21f)),
++                modifier = Modifier.size(responsive.dp(18f)),
+             )
+             Column(modifier = Modifier.weight(1f)) {
+                 Text(
+                     text = section.title,
+                     color = foreground,
+                     fontWeight = FontWeight.SemiBold,
+-                    fontSize = responsive.sp(12f),
+-                    lineHeight = responsive.sp(14f),
++                    fontSize = responsive.sp(11f),
++                    lineHeight = responsive.sp(13f),
+                     maxLines = 1,
+                     overflow = TextOverflow.Ellipsis,
+                 )
+@@ -1520,8 +1533,8 @@
+                     Text(
+                         text = "$it items",
+                         color = if (focused) Color(0xFF555555) else MaterialTheme.colorScheme.onSurfaceVariant,
+-                        fontSize = responsive.sp(9f),
+-                        lineHeight = responsive.sp(11f),
++                        fontSize = responsive.sp(8.5f),
++                        lineHeight = responsive.sp(10f),
+                         maxLines = 1,
+                         overflow = TextOverflow.Ellipsis,
+                     )
+@@ -1700,15 +1713,15 @@
+     NavigationRail(
+         modifier = Modifier
+             .fillMaxHeight()
+-            .padding(responsive.dp(10f))
++            .padding(responsive.dp(7f))
+             .width(responsive.railWidth)
+-            .clip(RoundedCornerShape(responsive.dp(22f))),
++            .clip(RoundedCornerShape(responsive.dp(16f))),
+         containerColor = Color(0xF20E0E0E),
+         header = {
+             Surface(
+-                modifier = Modifier.padding(vertical = responsive.dp(18f))
+-                    .size(responsive.dp(48f)),
+-                shape = RoundedCornerShape(responsive.dp(15f)),
++                modifier = Modifier.padding(vertical = responsive.dp(12f))
++                    .size(responsive.dp(40f)),
++                shape = RoundedCornerShape(responsive.dp(12f)),
+                 color = Color(0xFF202020),
+                 border = BorderStroke(
+                     1.dp,
+@@ -1720,7 +1733,7 @@
+ 	                        text = "b33r",
+ 	                        color = MaterialTheme.colorScheme.primary,
+ 	                        fontWeight = FontWeight.Black,
+-	                        fontSize = responsive.sp(12f),
++	                        fontSize = responsive.sp(10.5f),
+                     )
+                 }
