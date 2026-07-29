@@ -1,7 +1,21 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.10",
+  "latest": "1.9.14",
   "releases": [
+    {
+      "versionCode": 29,
+      "versionName": "1.9.14",
+      "releaseDate": "2026-07-29",
+      "sizeBytes": 56114839,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.14/StreamDeck-IPTV-1.9.14.apk",
+      "notes": [
+        "Retains the dark, poster-first B33R media-hub interface introduced in 1.9.13.",
+        "Uses compact navigation, white television focus frames, and restrained amber selected states.",
+        "Preserves responsive phone, tablet, Android TV, and Fire TV layouts.",
+        "Preserves favorites, Continue Watching, secure updates, VLC, Media3, quality, audio, subtitles, and playback fallbacks.",
+        "Uses the stable B33R signing identity for normal in-place updates."
+      ]
+    },
     {
       "versionCode": 24,
       "versionName": "1.9.10",

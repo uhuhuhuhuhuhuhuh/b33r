@@ -1,18 +1,17 @@
 {
   "schemaVersion": 1,
-  "versionCode": 24,
-  "versionName": "1.9.10",
-  "releaseDate": "2026-07-24",
+  "versionCode": 29,
+  "versionName": "1.9.14",
+  "releaseDate": "2026-07-29",
   "minimumAndroid": "5.0",
-  "sizeBytes": 58011514,
-  "sha256": "c7ac16e7259bb9db5afa020da98a72aa216fe374aaba84e948848e734b548238",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.10/StreamDeck-IPTV-1.9.10.apk",
+  "sizeBytes": 56114839,
+  "sha256": "5275c701499defe8aaf5a9fb74cfa7be15b0e3daa192b7077260a51dd37d2513",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.14/StreamDeck-IPTV-1.9.14.apk",
   "notes": [
-    "Bounds and streams large catalogs, cancels stale requests, and retries transient network failures to reduce crashes on older Fire TV hardware.",
-    "Makes automatic Media3 and VLC fallbacks resilient to buffering, decoder startup, app backgrounding, and rapid errors while preserving playback position.",
-    "Fixes Continue Watching progress across exits and player fallbacks so short or zero position samples cannot erase a valid resume point.",
-    "Hardens saved-login refresh, account-expiration handling, secure credential migration, and background notifications.",
-    "Improves phone and TV scaling, Fire TV keyboard and D-pad focus, selectable player controls, audio and subtitle tracks, and quality controls.",
-    "Verifies update size, checksum, package, version, signing identity, and final download location before installation."
+    "Retains the dark, poster-first B33R media-hub interface introduced in 1.9.13.",
+    "Uses compact navigation, white television focus frames, and restrained amber selected states.",
+    "Preserves responsive phone, tablet, Android TV, and Fire TV layouts.",
+    "Preserves favorites, Continue Watching, secure updates, VLC, Media3, quality, audio, subtitles, and playback fallbacks.",
+    "Uses the stable B33R signing identity for normal in-place updates."
   ]
 }
