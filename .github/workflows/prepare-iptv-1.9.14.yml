@@ -1,0 +1,126 @@
+name: Prepare B33R IPTV 1.9.14
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/prepare-iptv-1.9.14.yml"
+      - "build-input/1.9.14/**"
+
+permissions:
+  contents: read
+
+env:
+  VERSION_NAME: "1.9.14"
+  VERSION_CODE: "29"
+  SOURCE_ARCHIVE: "versions/1.9.13/StreamDeck-IPTV-source-1.9.13.zip"
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Unpack 1.9.13 and set 1.9.14 metadata
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/b33r-iptv-${VERSION_NAME}"
+          rm -rf "$SRC"
+          mkdir -p "$SRC"
+          python3 - "$SOURCE_ARCHIVE" "$SRC" <<'PY'
+          import pathlib, sys, zipfile
+          archive = pathlib.Path(sys.argv[1])
+          target = pathlib.Path(sys.argv[2])
+          with zipfile.ZipFile(archive) as zf:
+              for info in zf.infolist():
+                  normalized = info.filename.replace("\\", "/").lstrip("/")
+                  if not normalized:
+                      continue
+                  destination = target / normalized
+                  if info.is_dir() or normalized.endswith("/"):
+                      destination.mkdir(parents=True, exist_ok=True)
+                  else:
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      destination.write_bytes(zf.read(info))
+          PY
+          cd "$SRC"
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          path = Path("app/build.gradle.kts")
+          text = path.read_text()
+          text, code_count = re.subn(r'versionCode\s*=\s*28', 'versionCode = 29', text, count=1)
+          text, name_count = re.subn(r'versionName\s*=\s*"1\.9\.13"', 'versionName = "1.9.14"', text, count=1)
+          if code_count != 1 or name_count != 1:
+              raise SystemExit("Could not update version metadata from 1.9.13 to 1.9.14")
+          path.write_text(text)
+          PY
+          chmod +x gradlew
+          echo "src=$SRC" >> "$GITHUB_OUTPUT"
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          test -n "$SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Compile release APK
+        working-directory: ${{ steps.source.outputs.src }}
+        shell: bash
+        run: ./gradlew --no-daemon --stacktrace assembleRelease
+
+      - name: Collect unsigned APK and source
+        id: package
+        shell: bash
+        env:
+          SRC: ${{ steps.source.outputs.src }}
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/b33r-1.9.14-artifact"
+          rm -rf "$OUT"
+          mkdir -p "$OUT"
+          APK="$(find "$SRC/app/build/outputs/apk/release" -maxdepth 1 -type f -name '*.apk' | head -n 1)"
+          test -n "$APK"
+          cp "$APK" "$OUT/StreamDeck-IPTV-1.9.14-unsigned.apk"
+          python3 - "$SRC" "$OUT/StreamDeck-IPTV-source-1.9.14.zip" <<'PY'
+          import pathlib, sys, zipfile
+          source = pathlib.Path(sys.argv[1])
+          output = pathlib.Path(sys.argv[2])
+          excluded_parts = {".gradle", "build"}
+          excluded_names = {"local.properties"}
+          with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in sorted(source.rglob("*")):
+                  relative = path.relative_to(source)
+                  if any(part in excluded_parts for part in relative.parts):
+                      continue
+                  if path.name in excluded_names or not path.is_file():
+                      continue
+                  zf.write(path, relative.as_posix())
+          PY
+          sha256sum "$OUT"/*
+          echo "out=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: Upload unsigned build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: b33r-1.9.14-unsigned
+          path: ${{ steps.package.outputs.out }}/*
+          if-no-files-found: error
+          retention-days: 7
