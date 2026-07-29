@@ -81,12 +81,29 @@ jobs:
           yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
           "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 
-      - name: Compile release APK
+      - name: Compile release APK with disposable build key
         working-directory: ${{ steps.source.outputs.src }}
         shell: bash
-        run: ./gradlew --no-daemon --stacktrace assembleRelease
+        run: |
+          set -euo pipefail
+          TEMP_KEYSTORE="$RUNNER_TEMP/b33r-disposable-release.jks"
+          keytool -genkeypair -noprompt \
+            -keystore "$TEMP_KEYSTORE" \
+            -storepass temporary-build-only \
+            -keypass temporary-build-only \
+            -alias disposable \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 2 \
+            -dname "CN=Disposable Build Key,O=B33R Build,C=US"
+          export B33R_RELEASE_STORE_FILE="$TEMP_KEYSTORE"
+          export B33R_RELEASE_STORE_PASSWORD="temporary-build-only"
+          export B33R_RELEASE_KEY_ALIAS="disposable"
+          export B33R_RELEASE_KEY_PASSWORD="temporary-build-only"
+          ./gradlew --no-daemon --stacktrace assembleRelease
+          rm -f "$TEMP_KEYSTORE"
 
-      - name: Collect unsigned APK and source
+      - name: Collect temporary APK and source
         id: package
         shell: bash
         env:
@@ -98,13 +115,13 @@ jobs:
           mkdir -p "$OUT"
           APK="$(find "$SRC/app/build/outputs/apk/release" -maxdepth 1 -type f -name '*.apk' | head -n 1)"
           test -n "$APK"
-          cp "$APK" "$OUT/StreamDeck-IPTV-1.9.14-unsigned.apk"
+          cp "$APK" "$OUT/StreamDeck-IPTV-1.9.14-temporary-signed.apk"
           python3 - "$SRC" "$OUT/StreamDeck-IPTV-source-1.9.14.zip" <<'PY'
           import pathlib, sys, zipfile
           source = pathlib.Path(sys.argv[1])
           output = pathlib.Path(sys.argv[2])
           excluded_parts = {".gradle", "build"}
-          excluded_names = {"local.properties"}
+          excluded_names = {"local.properties", "b33r-disposable-release.jks"}
           with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
               for path in sorted(source.rglob("*")):
                   relative = path.relative_to(source)
@@ -117,10 +134,10 @@ jobs:
           sha256sum "$OUT"/*
           echo "out=$OUT" >> "$GITHUB_OUTPUT"
 
-      - name: Upload unsigned build artifact
+      - name: Upload preparation artifact
         uses: actions/upload-artifact@v4
         with:
-          name: b33r-1.9.14-unsigned
+          name: b33r-1.9.14-prepared
           path: ${{ steps.package.outputs.out }}/*
           if-no-files-found: error
           retention-days: 7
