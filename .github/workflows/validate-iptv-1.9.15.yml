@@ -69,63 +69,8 @@ jobs:
           PY
           cat build-input/1.9.15/patch-*.diff > "$RUNNER_TEMP/b33r-1.9.15.patch"
           patch -d "$SRC" -p1 --forward --batch < "$RUNNER_TEMP/b33r-1.9.15.patch"
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq webp
-          base64 --decode build-input/1.9.15/icon-01.b64 > "$RUNNER_TEMP/b33r-icon.webp"
-          dwebp "$RUNNER_TEMP/b33r-icon.webp" -o "$RUNNER_TEMP/b33r-icon.png"
           python3 -m pip install --quiet pillow
-          python3 - "$SRC" "$RUNNER_TEMP/b33r-icon.png" <<'PY'
-          import pathlib, sys
-          from PIL import Image, ImageDraw, ImageFont
-
-          root = pathlib.Path(sys.argv[1])
-          source = Image.open(pathlib.Path(sys.argv[2])).convert("RGBA")
-          side = min(source.size)
-          source = source.crop(((source.width-side)//2, (source.height-side)//2, (source.width+side)//2, (source.height+side)//2))
-          res = root / "app/src/main/res"
-
-          def inset(size, ratio):
-              canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-              inner = int(size * (1 - 2 * ratio))
-              art = source.resize((inner, inner), Image.Resampling.LANCZOS)
-              offset = (size - inner) // 2
-              canvas.alpha_composite(art, (offset, offset))
-              return canvas
-
-          for density, size in {"mdpi":48,"hdpi":72,"xhdpi":96,"xxhdpi":144,"xxxhdpi":192}.items():
-              folder = res / f"mipmap-{density}"
-              folder.mkdir(parents=True, exist_ok=True)
-              inset(size, .035).save(folder / "ic_launcher.png", optimize=True)
-              round_icon = inset(size, .06)
-              mask = Image.new("L", (size, size), 0)
-              ImageDraw.Draw(mask).ellipse((0, 0, size-1, size-1), fill=255)
-              round_icon.putalpha(Image.composite(round_icon.getchannel("A"), Image.new("L", (size, size), 0), mask))
-              round_icon.save(folder / "ic_launcher_round.png", optimize=True)
-
-          nodpi = res / "drawable-nodpi"
-          nodpi.mkdir(parents=True, exist_ok=True)
-          inset(320, .02).save(nodpi / "b33r_login_logo.png", optimize=True)
-          adaptive = Image.new("RGBA", (432, 432), (0, 0, 0, 0))
-          art = source.resize((318, 318), Image.Resampling.LANCZOS)
-          adaptive.alpha_composite(art, ((432-318)//2, (432-318)//2))
-          adaptive.save(nodpi / "ic_launcher_foreground_art.png", optimize=True)
-
-          def font(size, bold=False):
-              path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-              return ImageFont.truetype(path, size)
-
-          banner = Image.new("RGB", (320, 180), "#070707")
-          draw = ImageDraw.Draw(banner)
-          for y in range(180):
-              v = int(7 + 14 * (1 - y / 179))
-              draw.line((0, y, 319, y), fill=(v, v, v))
-          banner.paste(source.resize((146, 146), Image.Resampling.LANCZOS).convert("RGB"), (9, 17))
-          draw.text((164, 53), "B33R", font=font(37, True), fill="#FFB31A", stroke_width=1, stroke_fill="#6B3C00")
-          draw.text((166, 98), "IPTV", font=font(24, True), fill="#F6F6F6")
-          draw.rounded_rectangle((164, 132, 300, 139), radius=3, fill="#FFB31A")
-          for path in [res / "drawable/tv_banner.png", *sorted(res.glob("drawable-*/tv_banner.png"))]:
-              banner.save(path, optimize=True)
-          PY
+          python3 build-input/1.9.15/generate_b33r_icon.py "$SRC"
           chmod +x "$SRC/gradlew"
           echo "src=$SRC" >> "$GITHUB_OUTPUT"
 
