@@ -69,13 +69,17 @@ jobs:
           PY
           cat build-input/1.9.15/patch-*.diff > "$RUNNER_TEMP/b33r-1.9.15.patch"
           patch -d "$SRC" -p1 --forward --batch < "$RUNNER_TEMP/b33r-1.9.15.patch"
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq webp
+          base64 --decode build-input/1.9.15/icon-01.b64 > "$RUNNER_TEMP/b33r-icon.webp"
+          dwebp "$RUNNER_TEMP/b33r-icon.webp" -o "$RUNNER_TEMP/b33r-icon.png"
           python3 -m pip install --quiet pillow
-          python3 - "$SRC" build-input/1.9.15/icon-01.b64 <<'PY'
-          import base64, io, pathlib, sys
+          python3 - "$SRC" "$RUNNER_TEMP/b33r-icon.png" <<'PY'
+          import pathlib, sys
           from PIL import Image, ImageDraw, ImageFont
 
           root = pathlib.Path(sys.argv[1])
-          source = Image.open(io.BytesIO(base64.b64decode(pathlib.Path(sys.argv[2]).read_text()))).convert("RGBA")
+          source = Image.open(pathlib.Path(sys.argv[2])).convert("RGBA")
           side = min(source.size)
           source = source.crop(((source.width-side)//2, (source.height-side)//2, (source.width+side)//2, (source.height+side)//2))
           res = root / "app/src/main/res"
