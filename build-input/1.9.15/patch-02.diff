@@ -1,3 +1,29 @@
+         }
+     }
+ 
++    val pageScrollState = rememberScrollState()
++    val loginLogoSize = responsive.dp(if (isTelevision) 68f else 50f)
++    val loginCornerRadius = responsive.dp(if (isTelevision) 22f else 20f)
++    val contentHorizontalPadding = responsive.dp(if (isTelevision) 30f else 22f)
++    val contentVerticalPadding = responsive.dp(if (isTelevision) 26f else 22f)
++    val contentSpacing = responsive.dp(if (isTelevision) 14f else 12f)
++    val fieldMinimumHeight = responsive.dp(if (isTelevision) 56f else 50f)
++    val cardWidthFraction = if (isTelevision) 0.64f else 0.90f
++
+     Box(
+         modifier = Modifier
+             .fillMaxSize()
+@@ -393,67 +399,73 @@
+                 ),
+             )
+             .padding(WindowInsets.safeDrawing.asPaddingValues())
+-            .imePadding()
+-            .verticalScroll(rememberScrollState())
++            // Keep the phone login card fixed when the IME opens. Android is
++            // configured with adjustNothing, and only television layouts use
++            // a scroll container for unusually short compatibility windows.
++            .then(
++                if (isTelevision) {
 +                    Modifier.verticalScroll(pageScrollState)
 +                } else {
 +                    Modifier
@@ -6,8 +32,8 @@
              .padding(
 -                horizontal = responsive.dp(24f),
 -                vertical = responsive.dp(16f),
-+                horizontal = responsive.dp(if (isTelevision) 32f else 20f),
-+                vertical = responsive.dp(if (isTelevision) 24f else 14f),
++                horizontal = responsive.dp(if (isTelevision) 24f else 16f),
++                vertical = responsive.dp(if (isTelevision) 18f else 12f),
              ),
          contentAlignment = Alignment.Center,
      ) {
@@ -51,50 +77,9 @@
 +                    contentDescription = "B33R IPTV",
 +                    modifier = Modifier
 +                        .size(loginLogoSize)
-+                        .clip(RoundedCornerShape(responsive.dp(if (isTelevision) 22f else 16f))),
++                        .clip(RoundedCornerShape(responsive.dp(if (isTelevision) 18f else 14f))),
 +                    contentScale = ContentScale.Crop,
 +                )
 +                Column(
 +                    verticalArrangement = Arrangement.spacedBy(
-+                        responsive.dp(if (isTelevision) 7f else 4f),
-                     ),
-                 ) {
--                    Box(contentAlignment = Alignment.Center) {
--                        Text(
--	                            text = "b33r",
--	                            color = MaterialTheme.colorScheme.primary,
--	                            fontWeight = FontWeight.Black,
--	                            fontSize = responsive.sp(14f),
--	                            letterSpacing = 0.2.sp,
--	                        )
--                    }
--                }
--                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                     Text(
--	                        text = "B33R IPTV",
--	                        color = MaterialTheme.colorScheme.primary,
--	                        fontWeight = FontWeight.Bold,
--	                        fontSize = responsive.sp(12f),
--	                        letterSpacing = 2.4.sp,
-+                        text = "B33R IPTV",
-+                        color = MaterialTheme.colorScheme.primary,
-+                        fontWeight = FontWeight.Bold,
-+                        fontSize = responsive.sp(if (isTelevision) 15f else 12f),
-+                        letterSpacing = if (isTelevision) 3.0.sp else 2.4.sp,
-                     )
-                     Text(
-                         text = "Your media, one place",
--                        style = MaterialTheme.typography.headlineMedium,
-+                        fontSize = responsive.sp(if (isTelevision) 31f else 25f),
-+                        lineHeight = responsive.sp(if (isTelevision) 37f else 31f),
-                         fontWeight = FontWeight.SemiBold,
-                     )
-                     Text(
-                         text = "Browse live channels, movies, and series in one focused media library.",
-                         color = MaterialTheme.colorScheme.onSurfaceVariant,
--                        style = MaterialTheme.typography.bodyMedium,
-+                        fontSize = responsive.sp(if (isTelevision) 17f else 14f),
-+                        lineHeight = responsive.sp(if (isTelevision) 24f else 20f),
-                     )
-                 }
-                 OutlinedTextField(
++                        responsive.dp(if (isTelevision) 5f else 3f),
