@@ -1,0 +1,52 @@
+name: Export Android APK signing tools
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/export-android-signing-tools.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Install Android build tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          test -n "$SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          "$SDKMANAGER" "build-tools;36.0.0"
+
+      - name: Package signing utilities
+        id: package
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          BUILD_TOOLS="$SDK_ROOT/build-tools/36.0.0"
+          OUT="$RUNNER_TEMP/android-signing-tools"
+          mkdir -p "$OUT/lib"
+          cp "$BUILD_TOOLS/apksigner" "$OUT/apksigner"
+          cp "$BUILD_TOOLS/lib/apksigner.jar" "$OUT/lib/apksigner.jar"
+          cp "$BUILD_TOOLS/zipalign" "$OUT/zipalign"
+          cp "$BUILD_TOOLS/aapt2" "$OUT/aapt2"
+          chmod +x "$OUT/apksigner" "$OUT/zipalign" "$OUT/aapt2"
+          echo "out=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: Upload tools
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-signing-tools-36
+          path: ${{ steps.package.outputs.out }}
+          if-no-files-found: error
+          retention-days: 1
