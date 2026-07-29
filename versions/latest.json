@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "versionCode": 29,
-  "versionName": "1.9.14",
+  "versionCode": 30,
+  "versionName": "1.9.15",
   "releaseDate": "2026-07-29",
   "minimumAndroid": "5.0",
-  "sizeBytes": 56114839,
-  "sha256": "5275c701499defe8aaf5a9fb74cfa7be15b0e3daa192b7077260a51dd37d2513",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.14/StreamDeck-IPTV-1.9.14.apk",
+  "sizeBytes": 56463452,
+  "sha256": "a972eb3627d48a727c1dc62fcd8b6827e5f77c46d2a6a9a657d7b1acbfdbf1bf",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.15/StreamDeck-IPTV-1.9.15.apk",
   "notes": [
-    "Retains the dark, poster-first B33R media-hub interface introduced in 1.9.13.",
-    "Uses compact navigation, white television focus frames, and restrained amber selected states.",
-    "Preserves responsive phone, tablet, Android TV, and Fire TV layouts.",
-    "Preserves favorites, Continue Watching, secure updates, VLC, Media3, quality, audio, subtitles, and playback fallbacks.",
-    "Uses the stable B33R signing identity for normal in-place updates."
+    "Keeps the mobile login screen stationary when the software keyboard opens.",
+    "Scales the login screen specifically for Android TV and Fire TV displays.",
+    "Removes the duplicate bottom section navigation and retains the compact top navigation.",
+    "Reduces oversized typography, spacing, cards, rails, headers, filters, and player controls across the app.",
+    "Introduces refreshed B33R launcher, login, adaptive-icon, and television-banner artwork."
   ]
 }
