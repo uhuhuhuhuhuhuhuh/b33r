@@ -1,0 +1,35 @@
+name: Check stable B33R signing certificate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/check-stable-signing.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Install Android build tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          "$SDKMANAGER" "build-tools;36.0.0"
+
+      - name: Print stable APK certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          "$SDK_ROOT/build-tools/36.0.0/apksigner" verify --verbose --print-certs \
+            versions/1.9.10/StreamDeck-IPTV-1.9.10.apk
