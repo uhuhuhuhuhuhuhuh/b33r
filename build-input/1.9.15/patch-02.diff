@@ -1,0 +1,100 @@
++                    Modifier.verticalScroll(pageScrollState)
++                } else {
++                    Modifier
++                },
++            )
+             .padding(
+-                horizontal = responsive.dp(24f),
+-                vertical = responsive.dp(16f),
++                horizontal = responsive.dp(if (isTelevision) 32f else 20f),
++                vertical = responsive.dp(if (isTelevision) 24f else 14f),
+             ),
+         contentAlignment = Alignment.Center,
+     ) {
+         Surface(
+             modifier = Modifier
+                 .widthIn(max = responsive.loginMaxWidth)
+-                .fillMaxWidth(0.92f),
+-            shape = RoundedCornerShape(responsive.dp(26f)),
++                .fillMaxWidth(cardWidthFraction),
++            shape = RoundedCornerShape(loginCornerRadius),
+             color = Color(0xF2171717),
+-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.34f)),
+-            tonalElevation = 8.dp,
+-            shadowElevation = 18.dp,
++            border = BorderStroke(
++                responsive.dp(if (isTelevision) 1.5f else 1f),
++                MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
++            ),
++            tonalElevation = if (isTelevision) 12.dp else 8.dp,
++            shadowElevation = if (isTelevision) 24.dp else 18.dp,
+         ) {
+             Column(
+                 modifier = Modifier.padding(
+-                    horizontal = responsive.dp(28f),
+-                    vertical = responsive.dp(30f),
++                    horizontal = contentHorizontalPadding,
++                    vertical = contentVerticalPadding,
+                 ),
+-                verticalArrangement = Arrangement.spacedBy(responsive.dp(16f)),
++                verticalArrangement = Arrangement.spacedBy(contentSpacing),
+             ) {
+-                Surface(
+-                    modifier = Modifier.size(responsive.dp(54f)),
+-                    shape = RoundedCornerShape(responsive.dp(16f)),
+-                    color = Color(0xFF202020),
+-                    border = BorderStroke(
+-                        1.dp,
+-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
++                Image(
++                    painter = painterResource(R.drawable.b33r_login_logo),
++                    contentDescription = "B33R IPTV",
++                    modifier = Modifier
++                        .size(loginLogoSize)
++                        .clip(RoundedCornerShape(responsive.dp(if (isTelevision) 22f else 16f))),
++                    contentScale = ContentScale.Crop,
++                )
++                Column(
++                    verticalArrangement = Arrangement.spacedBy(
++                        responsive.dp(if (isTelevision) 7f else 4f),
+                     ),
+                 ) {
+-                    Box(contentAlignment = Alignment.Center) {
+-                        Text(
+-	                            text = "b33r",
+-	                            color = MaterialTheme.colorScheme.primary,
+-	                            fontWeight = FontWeight.Black,
+-	                            fontSize = responsive.sp(14f),
+-	                            letterSpacing = 0.2.sp,
+-	                        )
+-                    }
+-                }
+-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                     Text(
+-	                        text = "B33R IPTV",
+-	                        color = MaterialTheme.colorScheme.primary,
+-	                        fontWeight = FontWeight.Bold,
+-	                        fontSize = responsive.sp(12f),
+-	                        letterSpacing = 2.4.sp,
++                        text = "B33R IPTV",
++                        color = MaterialTheme.colorScheme.primary,
++                        fontWeight = FontWeight.Bold,
++                        fontSize = responsive.sp(if (isTelevision) 15f else 12f),
++                        letterSpacing = if (isTelevision) 3.0.sp else 2.4.sp,
+                     )
+                     Text(
+                         text = "Your media, one place",
+-                        style = MaterialTheme.typography.headlineMedium,
++                        fontSize = responsive.sp(if (isTelevision) 31f else 25f),
++                        lineHeight = responsive.sp(if (isTelevision) 37f else 31f),
+                         fontWeight = FontWeight.SemiBold,
+                     )
+                     Text(
+                         text = "Browse live channels, movies, and series in one focused media library.",
+                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+-                        style = MaterialTheme.typography.bodyMedium,
++                        fontSize = responsive.sp(if (isTelevision) 17f else 14f),
++                        lineHeight = responsive.sp(if (isTelevision) 24f else 20f),
+                     )
+                 }
+                 OutlinedTextField(
