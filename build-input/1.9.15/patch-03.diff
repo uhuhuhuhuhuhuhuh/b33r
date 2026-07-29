@@ -1,0 +1,59 @@
+@@ -464,6 +480,7 @@
+                     },
+                     modifier = Modifier
+                         .fillMaxWidth()
++                        .heightIn(min = fieldMinimumHeight)
+                         .focusRequester(usernameFocusRequester)
+                         .onFocusChanged {
+                             if (!it.isFocused) usernameEditing = false
+@@ -504,6 +521,7 @@
+                     },
+                     modifier = Modifier
+                         .fillMaxWidth()
++                        .heightIn(min = fieldMinimumHeight)
+                         .focusRequester(passwordFocusRequester)
+                         .onFocusChanged {
+                             if (!it.isFocused) passwordEditing = false
+@@ -536,7 +554,7 @@
+ 	                    onClick = submit,
+ 	                    modifier = Modifier
+                             .fillMaxWidth()
+-                            .heightIn(min = responsive.dp(54f)),
++                            .heightIn(min = fieldMinimumHeight),
+ 	                    enabled = !loading,
+ 	                    shape = RoundedCornerShape(responsive.dp(14f)),
+                     colors = ButtonDefaults.buttonColors(
+diff -urN '--exclude=*.png' b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt b33r-src/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt
+--- b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt	2026-07-29 18:28:26.000000000 +0000
++++ b33r-src/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt	2026-07-29 19:20:49.395644363 +0000
+@@ -175,7 +175,7 @@
+             },
+             gridSpacing = if (profile.isTelevision) 18.dp else 14.dp,
+             railWidth = if (profile.isTelevision) 108.dp else 104.dp,
+-            loginMaxWidth = if (profile.isTelevision) 520.dp else 460.dp,
++            loginMaxWidth = if (profile.isTelevision) 680.dp else 460.dp,
+             playerPadding = if (profile.isTelevision) 12.dp else 10.dp,
+             playerButtonSize = if (profile.isTelevision) 50.dp else 44.dp,
+             playerIconSize = if (profile.isTelevision) 34.dp else 30.dp,
+diff -urN '--exclude=*.png' b33r-clean/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml b33r-src/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+--- b33r-clean/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml	2026-07-29 18:28:26.000000000 +0000
++++ b33r-src/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml	2026-07-29 19:21:29.407643913 +0000
+@@ -1,5 +1,5 @@
+ <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+     <background android:drawable="@color/launcher_background" />
+-    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+-    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
++    <foreground android:drawable="@drawable/ic_launcher_foreground_art" />
++    <monochrome android:drawable="@drawable/ic_launcher_foreground_art" />
+ </adaptive-icon>
+diff -urN '--exclude=*.png' b33r-clean/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml b33r-src/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+--- b33r-clean/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml	2026-07-29 18:28:26.000000000 +0000
++++ b33r-src/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml	2026-07-29 19:21:29.407643913 +0000
+@@ -1,5 +1,5 @@
+ <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+     <background android:drawable="@color/launcher_background" />
+-    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+-    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
++    <foreground android:drawable="@drawable/ic_launcher_foreground_art" />
++    <monochrome android:drawable="@drawable/ic_launcher_foreground_art" />
+ </adaptive-icon>
