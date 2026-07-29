@@ -1,4 +1,4 @@
-diff -urN '--exclude=*.png' b33r-clean/app/build.gradle.kts b33r-src/app/build.gradle.kts
+diff -urN '--exclude=*.png' '--exclude=*.webp' b33r-clean/app/build.gradle.kts b33r-src/app/build.gradle.kts
 --- b33r-clean/app/build.gradle.kts	2026-07-29 18:28:26.000000000 +0000
 +++ b33r-src/app/build.gradle.kts	2026-07-29 19:20:49.395644363 +0000
 @@ -33,8 +33,8 @@
@@ -12,7 +12,7 @@ diff -urN '--exclude=*.png' b33r-clean/app/build.gradle.kts b33r-src/app/build.g
  
          buildConfigField("String", "XTREAM_BASE_URL", "\"http://tv.b33r.top:59828\"")
          buildConfigField(
-diff -urN '--exclude=*.png' b33r-clean/app/src/main/AndroidManifest.xml b33r-src/app/src/main/AndroidManifest.xml
+diff -urN '--exclude=*.png' '--exclude=*.webp' b33r-clean/app/src/main/AndroidManifest.xml b33r-src/app/src/main/AndroidManifest.xml
 --- b33r-clean/app/src/main/AndroidManifest.xml	2026-07-29 18:28:26.000000000 +0000
 +++ b33r-src/app/src/main/AndroidManifest.xml	2026-07-29 19:20:49.395644363 +0000
 @@ -26,7 +26,8 @@
@@ -25,7 +25,7 @@ diff -urN '--exclude=*.png' b33r-clean/app/src/main/AndroidManifest.xml b33r-src
              <intent-filter>
                  <action android:name="android.intent.action.MAIN" />
                  <category android:name="android.intent.category.LAUNCHER" />
-diff -urN '--exclude=*.png' b33r-clean/app/src/main/java/com/streamdeck/iptv/MainActivity.kt b33r-src/app/src/main/java/com/streamdeck/iptv/MainActivity.kt
+diff -urN '--exclude=*.png' '--exclude=*.webp' b33r-clean/app/src/main/java/com/streamdeck/iptv/MainActivity.kt b33r-src/app/src/main/java/com/streamdeck/iptv/MainActivity.kt
 --- b33r-clean/app/src/main/java/com/streamdeck/iptv/MainActivity.kt	2026-07-29 18:28:26.000000000 +0000
 +++ b33r-src/app/src/main/java/com/streamdeck/iptv/MainActivity.kt	2026-07-29 19:20:49.395644363 +0000
 @@ -4,6 +4,7 @@
@@ -44,9 +44,9 @@ diff -urN '--exclude=*.png' b33r-clean/app/src/main/java/com/streamdeck/iptv/Mai
          enableEdgeToEdge()
          setContent {
              StreamDeckApp(viewModel)
-diff -urN '--exclude=*.png' b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt b33r-src/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt
+diff -urN '--exclude=*.png' '--exclude=*.webp' b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt b33r-src/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt
 --- b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt	2026-07-29 18:28:26.000000000 +0000
-+++ b33r-src/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt	2026-07-29 19:20:49.395644363 +0000
++++ b33r-src/app/src/main/java/com/streamdeck/iptv/ui/AppUi.kt	2026-07-29 19:35:40.831634326 +0000
 @@ -13,6 +13,7 @@
  import androidx.compose.animation.animateColorAsState
  import androidx.compose.animation.core.animateFloatAsState
@@ -55,15 +55,26 @@ diff -urN '--exclude=*.png' b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/
  import androidx.compose.foundation.background
  import androidx.compose.foundation.clickable
  import androidx.compose.foundation.rememberScrollState
-@@ -31,7 +32,6 @@
+@@ -31,8 +32,6 @@
  import androidx.compose.foundation.layout.fillMaxWidth
  import androidx.compose.foundation.layout.height
  import androidx.compose.foundation.layout.heightIn
 -import androidx.compose.foundation.layout.imePadding
- import androidx.compose.foundation.layout.navigationBars
+-import androidx.compose.foundation.layout.navigationBars
  import androidx.compose.foundation.layout.padding
  import androidx.compose.foundation.layout.safeDrawing
-@@ -117,6 +117,7 @@
+ import androidx.compose.foundation.layout.size
+@@ -76,9 +75,6 @@
+ import androidx.compose.material3.IconButton
+ import androidx.compose.material3.LinearProgressIndicator
+ import androidx.compose.material3.MaterialTheme
+-import androidx.compose.material3.NavigationBar
+-import androidx.compose.material3.NavigationBarItem
+-import androidx.compose.material3.NavigationBarItemDefaults
+ import androidx.compose.material3.NavigationRail
+ import androidx.compose.material3.NavigationRailItem
+ import androidx.compose.material3.NavigationRailItemDefaults
+@@ -117,6 +113,7 @@
  import androidx.compose.ui.platform.LocalContext
  import androidx.compose.ui.platform.LocalFocusManager
  import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -71,30 +82,4 @@ diff -urN '--exclude=*.png' b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/
  import androidx.compose.ui.platform.LocalSoftwareKeyboardController
  import androidx.compose.ui.text.font.FontWeight
  import androidx.compose.ui.text.input.ImeAction
-@@ -380,6 +381,15 @@
-         }
-     }
- 
-+    val pageScrollState = rememberScrollState()
-+    val loginLogoSize = responsive.dp(if (isTelevision) 84f else 58f)
-+    val loginCornerRadius = responsive.dp(if (isTelevision) 30f else 24f)
-+    val contentHorizontalPadding = responsive.dp(if (isTelevision) 40f else 26f)
-+    val contentVerticalPadding = responsive.dp(if (isTelevision) 38f else 28f)
-+    val contentSpacing = responsive.dp(if (isTelevision) 20f else 15f)
-+    val fieldMinimumHeight = responsive.dp(if (isTelevision) 64f else 54f)
-+    val cardWidthFraction = if (isTelevision) 0.74f else 0.92f
-+
-     Box(
-         modifier = Modifier
-             .fillMaxSize()
-@@ -393,67 +403,73 @@
-                 ),
-             )
-             .padding(WindowInsets.safeDrawing.asPaddingValues())
--            .imePadding()
--            .verticalScroll(rememberScrollState())
-+            // Keep the phone login card fixed when the IME opens. Android is
-+            // configured with adjustNothing, and only television layouts use
-+            // a scroll container for unusually short compatibility windows.
-+            .then(
-+                if (isTelevision) {
+@@ -380,6 +377,15 @@
