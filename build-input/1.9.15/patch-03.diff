@@ -1,4 +1,45 @@
-@@ -464,6 +480,7 @@
+                     ),
+                 ) {
+-                    Box(contentAlignment = Alignment.Center) {
+-                        Text(
+-	                            text = "b33r",
+-	                            color = MaterialTheme.colorScheme.primary,
+-	                            fontWeight = FontWeight.Black,
+-	                            fontSize = responsive.sp(14f),
+-	                            letterSpacing = 0.2.sp,
+-	                        )
+-                    }
+-                }
+-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                     Text(
+-	                        text = "B33R IPTV",
+-	                        color = MaterialTheme.colorScheme.primary,
+-	                        fontWeight = FontWeight.Bold,
+-	                        fontSize = responsive.sp(12f),
+-	                        letterSpacing = 2.4.sp,
++                        text = "B33R IPTV",
++                        color = MaterialTheme.colorScheme.primary,
++                        fontWeight = FontWeight.Bold,
++                        fontSize = responsive.sp(if (isTelevision) 13f else 11f),
++                        letterSpacing = if (isTelevision) 2.4.sp else 2.0.sp,
+                     )
+                     Text(
+                         text = "Your media, one place",
+-                        style = MaterialTheme.typography.headlineMedium,
++                        fontSize = responsive.sp(if (isTelevision) 26f else 22f),
++                        lineHeight = responsive.sp(if (isTelevision) 31f else 27f),
+                         fontWeight = FontWeight.SemiBold,
+                     )
+                     Text(
+                         text = "Browse live channels, movies, and series in one focused media library.",
+                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+-                        style = MaterialTheme.typography.bodyMedium,
++                        fontSize = responsive.sp(if (isTelevision) 14f else 12.5f),
++                        lineHeight = responsive.sp(if (isTelevision) 20f else 18f),
+                     )
+                 }
+                 OutlinedTextField(
+@@ -464,6 +476,7 @@
                      },
                      modifier = Modifier
                          .fillMaxWidth()
@@ -6,7 +47,16 @@
                          .focusRequester(usernameFocusRequester)
                          .onFocusChanged {
                              if (!it.isFocused) usernameEditing = false
-@@ -504,6 +521,7 @@
+@@ -480,7 +493,7 @@
+                     enabled = !loading,
+                     readOnly = isTelevision && !usernameEditing,
+                     singleLine = true,
+-	                    shape = RoundedCornerShape(responsive.dp(14f)),
++	                    shape = RoundedCornerShape(responsive.dp(11f)),
+                     label = { Text("Username") },
+                     colors = OutlinedTextFieldDefaults.colors(
+                         focusedBorderColor = MaterialTheme.colorScheme.primary,
+@@ -504,6 +517,7 @@
                      },
                      modifier = Modifier
                          .fillMaxWidth()
@@ -14,46 +64,22 @@
                          .focusRequester(passwordFocusRequester)
                          .onFocusChanged {
                              if (!it.isFocused) passwordEditing = false
-@@ -536,7 +554,7 @@
+@@ -520,7 +534,7 @@
+                     enabled = !loading,
+                     readOnly = isTelevision && !passwordEditing,
+                     singleLine = true,
+-	                    shape = RoundedCornerShape(responsive.dp(14f)),
++	                    shape = RoundedCornerShape(responsive.dp(11f)),
+                     label = { Text("Password") },
+                     colors = OutlinedTextFieldDefaults.colors(
+                         focusedBorderColor = MaterialTheme.colorScheme.primary,
+@@ -536,9 +550,9 @@
  	                    onClick = submit,
  	                    modifier = Modifier
                              .fillMaxWidth()
 -                            .heightIn(min = responsive.dp(54f)),
 +                            .heightIn(min = fieldMinimumHeight),
  	                    enabled = !loading,
- 	                    shape = RoundedCornerShape(responsive.dp(14f)),
+-	                    shape = RoundedCornerShape(responsive.dp(14f)),
++	                    shape = RoundedCornerShape(responsive.dp(11f)),
                      colors = ButtonDefaults.buttonColors(
-diff -urN '--exclude=*.png' b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt b33r-src/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt
---- b33r-clean/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt	2026-07-29 18:28:26.000000000 +0000
-+++ b33r-src/app/src/main/java/com/streamdeck/iptv/ui/ResponsiveLayout.kt	2026-07-29 19:20:49.395644363 +0000
-@@ -175,7 +175,7 @@
-             },
-             gridSpacing = if (profile.isTelevision) 18.dp else 14.dp,
-             railWidth = if (profile.isTelevision) 108.dp else 104.dp,
--            loginMaxWidth = if (profile.isTelevision) 520.dp else 460.dp,
-+            loginMaxWidth = if (profile.isTelevision) 680.dp else 460.dp,
-             playerPadding = if (profile.isTelevision) 12.dp else 10.dp,
-             playerButtonSize = if (profile.isTelevision) 50.dp else 44.dp,
-             playerIconSize = if (profile.isTelevision) 34.dp else 30.dp,
-diff -urN '--exclude=*.png' b33r-clean/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml b33r-src/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
---- b33r-clean/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml	2026-07-29 18:28:26.000000000 +0000
-+++ b33r-src/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml	2026-07-29 19:21:29.407643913 +0000
-@@ -1,5 +1,5 @@
- <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-     <background android:drawable="@color/launcher_background" />
--    <foreground android:drawable="@drawable/ic_launcher_foreground" />
--    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
-+    <foreground android:drawable="@drawable/ic_launcher_foreground_art" />
-+    <monochrome android:drawable="@drawable/ic_launcher_foreground_art" />
- </adaptive-icon>
-diff -urN '--exclude=*.png' b33r-clean/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml b33r-src/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
---- b33r-clean/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml	2026-07-29 18:28:26.000000000 +0000
-+++ b33r-src/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml	2026-07-29 19:21:29.407643913 +0000
-@@ -1,5 +1,5 @@
- <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-     <background android:drawable="@color/launcher_background" />
--    <foreground android:drawable="@drawable/ic_launcher_foreground" />
--    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
-+    <foreground android:drawable="@drawable/ic_launcher_foreground_art" />
-+    <monochrome android:drawable="@drawable/ic_launcher_foreground_art" />
- </adaptive-icon>
