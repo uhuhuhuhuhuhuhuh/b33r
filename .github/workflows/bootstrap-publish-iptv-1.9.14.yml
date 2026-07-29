@@ -1,0 +1,25 @@
+name: Bootstrap B33R IPTV 1.9.14 release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "build-input/1.9.14/start-secure-signing-main"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Check out secure release branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/build-b33r-1.9.14
+          fetch-depth: 0
+
+      - name: Build, sign, verify, and publish 1.9.14
+        shell: bash
+        run: bash build-input/1.9.14/secure-publish.sh
