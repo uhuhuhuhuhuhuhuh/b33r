@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "build-input/**/patch.gz.b64"
+      - "build-input/**/patch.gz.b64.part*"
       - "build-input/**/candidate.json"
 
 permissions:
@@ -48,7 +48,7 @@ jobs:
           CANDIDATE_DIR="$(dirname "$CANDIDATE_JSON")"
           BASE_SOURCE="versions/1.9.17/StreamDeck-IPTV-source-1.9.17.zip"
           test -s "$BASE_SOURCE"
-          base64 -d "$CANDIDATE_DIR/patch.gz.b64" | gzip -d > "$RUNNER_TEMP/candidate.patch"
+          cat "$CANDIDATE_DIR"/patch.gz.b64.part* | base64 -d | gzip -d > "$RUNNER_TEMP/candidate.patch"
           mkdir -p "$RUNNER_TEMP/source"
           unzip -q "$BASE_SOURCE" -d "$RUNNER_TEMP/source"
           (cd "$RUNNER_TEMP/source" && patch --batch --forward -p1 < "$RUNNER_TEMP/candidate.patch")
