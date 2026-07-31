@@ -1,0 +1,102 @@
+name: Validate B33R candidate source
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "build-input/**/source.zip.b64"
+      - "build-input/**/candidate.json"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          test -n "$SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Decode candidate source
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANDIDATE_JSON="$(find build-input -mindepth 2 -maxdepth 2 -name candidate.json | head -n 1)"
+          test -n "$CANDIDATE_JSON"
+          CANDIDATE_DIR="$(dirname "$CANDIDATE_JSON")"
+          base64 -d "$CANDIDATE_DIR/source.zip.b64" > "$RUNNER_TEMP/source.zip"
+          mkdir -p "$RUNNER_TEMP/source"
+          unzip -q "$RUNNER_TEMP/source.zip" -d "$RUNNER_TEMP/source"
+          echo "CANDIDATE_JSON=$CANDIDATE_JSON" >> "$GITHUB_ENV"
+          echo "SOURCE_DIR=$RUNNER_TEMP/source" >> "$GITHUB_ENV"
+
+      - name: Create disposable validation key
+        shell: bash
+        run: |
+          set -euo pipefail
+          keytool -genkeypair -v \
+            -keystore "$RUNNER_TEMP/validation.keystore" \
+            -storepass android \
+            -alias androiddebugkey \
+            -keypass android \
+            -dname "CN=B33R Validation,O=B33R,C=US" \
+            -keyalg RSA -keysize 2048 -validity 10000
+          echo "B33R_RELEASE_STORE_FILE=$RUNNER_TEMP/validation.keystore" >> "$GITHUB_ENV"
+          echo "B33R_RELEASE_STORE_PASSWORD=android" >> "$GITHUB_ENV"
+          echo "B33R_RELEASE_KEY_ALIAS=androiddebugkey" >> "$GITHUB_ENV"
+          echo "B33R_RELEASE_KEY_PASSWORD=android" >> "$GITHUB_ENV"
+
+      - name: Build release APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x "$SOURCE_DIR/gradlew"
+          cd "$SOURCE_DIR"
+          ./gradlew --no-daemon --stacktrace assembleRelease
+
+      - name: Verify candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          BUILD_TOOLS="$SDK_ROOT/build-tools/36.0.0"
+          APK="$SOURCE_DIR/app/build/outputs/apk/release/app-release.apk"
+          test -s "$APK"
+          VERSION_NAME="$(python3 -c 'import json,os; print(json.load(open(os.environ["CANDIDATE_JSON"]))["versionName"])')"
+          VERSION_CODE="$(python3 -c 'import json,os; print(json.load(open(os.environ["CANDIDATE_JSON"]))["versionCode"])')"
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK"
+          "$BUILD_TOOLS/aapt" dump badging "$APK" | tee "$RUNNER_TEMP/badging.txt"
+          grep -q "package: name='com.streamdeck.iptv' versionCode='$VERSION_CODE' versionName='$VERSION_NAME'" "$RUNNER_TEMP/badging.txt"
+          mkdir -p "$RUNNER_TEMP/artifact"
+          cp "$APK" "$RUNNER_TEMP/artifact/B33R-IPTV-$VERSION_NAME-validation.apk"
+          cp "$RUNNER_TEMP/source.zip" "$RUNNER_TEMP/artifact/B33R-IPTV-source-$VERSION_NAME.zip"
+
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: b33r-candidate-validation
+          path: ${{ runner.temp }}/artifact
+          if-no-files-found: error
+          retention-days: 5
