@@ -1,6 +1,10 @@
 name: Publish latest B33R GitHub release
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "versions/latest.json"
   pull_request:
     branches: [main]
     paths:
