@@ -1,16 +1,17 @@
 {
   "schemaVersion": 1,
-  "versionCode": 32,
-  "versionName": "1.9.17",
+  "versionCode": 33,
+  "versionName": "2.0.0",
   "releaseDate": "2026-07-31",
   "minimumAndroid": "5.0",
-  "sizeBytes": 56464366,
-  "sha256": "a34421575c4eb5c1c9e560a140a8bef35e03ddb5183aa45cae419f13b595bccb",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.17/StreamDeck-IPTV-1.9.17.apk",
+  "sizeBytes": 56645070,
+  "sha256": "783bc1c6cc406f59927a3faa9f2ae2b3766b6854573885014b2cdd1a353ddad6",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/2.0.0/StreamDeck-IPTV-2.0.0.apk",
   "notes": [
-    "Automatically prefers audio tracks matching the Fire TV, Android TV, or phone language.",
-    "Automatically prefers matching subtitle tracks when the stream exposes language metadata or recognizable track names.",
-    "Keeps manual audio and subtitle track selection available and preserves the selected manual override during playback.",
-    "Retains http://pro.b33r.top, the compact responsive interface, top-only navigation, refreshed artwork, favorites, Continue Watching, and playback fallbacks."
+    "Introduces an original TV-first EPG grid and touch-first phone/tablet navigation shell.",
+    "Adds multiple encrypted playlists, provider-specific credentials, profiles, parental controls, channel organization, global search, favorites, and viewing history.",
+    "Adds scheduled recordings, reminders, rolling live-TV timeshift, multiview foundations, picture-in-picture, backup/restore, and expanded playback and appearance preferences.",
+    "Keeps automatic device-language audio/subtitle selection, manual track overrides, Media3 and VLC playback fallbacks, and the http://pro.b33r.top default server.",
+    "Uses original B33R code, branding, assets, and interaction design; no third-party paid feature or licensing bypass is included."
   ]
 }

@@ -1,7 +1,21 @@
 {
   "schemaVersion": 1,
-  "latest": "1.9.17",
+  "latest": "2.0.0",
   "releases": [
+    {
+      "versionCode": 33,
+      "versionName": "2.0.0",
+      "releaseDate": "2026-07-31",
+      "sizeBytes": 56645070,
+      "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/2.0.0/StreamDeck-IPTV-2.0.0.apk",
+      "notes": [
+        "Introduces an original TV-first EPG grid and touch-first phone/tablet navigation shell.",
+        "Adds multiple encrypted playlists, provider-specific credentials, profiles, parental controls, channel organization, global search, favorites, and viewing history.",
+        "Adds scheduled recordings, reminders, rolling live-TV timeshift, multiview foundations, picture-in-picture, backup/restore, and expanded playback and appearance preferences.",
+        "Keeps automatic device-language audio/subtitle selection, manual track overrides, Media3 and VLC playback fallbacks, and the http://pro.b33r.top default server.",
+        "Uses original B33R code, branding, assets, and interaction design; no third-party paid feature or licensing bypass is included."
+      ]
+    },
     {
       "versionCode": 32,
       "versionName": "1.9.17",
