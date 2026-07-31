@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "build-input/**/patch.gz.b64.part*"
+      - "build-input/**/conflict-overrides.tar.gz.b64"
       - "build-input/**/candidate.json"
 
 permissions:
@@ -51,7 +52,15 @@ jobs:
           cat "$CANDIDATE_DIR"/patch.gz.b64.part* | base64 -d | gzip -d > "$RUNNER_TEMP/candidate.patch"
           mkdir -p "$RUNNER_TEMP/source"
           unzip -q "$BASE_SOURCE" -d "$RUNNER_TEMP/source"
+          set +e
           (cd "$RUNNER_TEMP/source" && patch --batch --forward -p1 < "$RUNNER_TEMP/candidate.patch")
+          PATCH_STATUS=$?
+          set -e
+          if [[ -s "$CANDIDATE_DIR/conflict-overrides.tar.gz.b64" ]]; then
+            base64 -d "$CANDIDATE_DIR/conflict-overrides.tar.gz.b64" | tar -xz -C "$RUNNER_TEMP/source"
+          fi
+          find "$RUNNER_TEMP/source" -type f \( -name '*.rej' -o -name '*.orig' \) -delete
+          echo "Patch exit status before exact overrides: $PATCH_STATUS"
           (cd "$RUNNER_TEMP/source" && zip -qr "$RUNNER_TEMP/source.zip" . -x '.gradle/*' '*/build/*' 'local.properties')
           echo "CANDIDATE_JSON=$CANDIDATE_JSON" >> "$GITHUB_ENV"
           echo "SOURCE_DIR=$RUNNER_TEMP/source" >> "$GITHUB_ENV"
