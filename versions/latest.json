@@ -1,15 +1,16 @@
 {
   "schemaVersion": 1,
-  "versionCode": 31,
-  "versionName": "1.9.16",
+  "versionCode": 32,
+  "versionName": "1.9.17",
   "releaseDate": "2026-07-31",
   "minimumAndroid": "5.0",
-  "sizeBytes": 56463367,
-  "sha256": "5b832bce26f95d29eea4129ff43a70aa357dbd5f916d6c4959ae75caed3edc3f",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.16/StreamDeck-IPTV-1.9.16.apk",
+  "sizeBytes": 56464366,
+  "sha256": "a34421575c4eb5c1c9e560a140a8bef35e03ddb5183aa45cae419f13b595bccb",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.17/StreamDeck-IPTV-1.9.17.apk",
   "notes": [
-    "Changes the B33R IPTV Xtream/Dispatcharr server to http://pro.b33r.top.",
-    "Updates Android cleartext-network permissions so the new HTTP hostname can be reached on Android and Fire TV.",
-    "Retains the compact responsive interface, top-only navigation, refreshed artwork, favorites, Continue Watching, and playback fallbacks from 1.9.15."
+    "Automatically prefers audio tracks matching the Fire TV, Android TV, or phone language.",
+    "Automatically prefers matching subtitle tracks when the stream exposes language metadata or recognizable track names.",
+    "Keeps manual audio and subtitle track selection available and preserves the selected manual override during playback.",
+    "Retains http://pro.b33r.top, the compact responsive interface, top-only navigation, refreshed artwork, favorites, Continue Watching, and playback fallbacks."
   ]
 }
