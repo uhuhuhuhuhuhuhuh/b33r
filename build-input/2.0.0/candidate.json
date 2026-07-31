@@ -2,5 +2,6 @@
   "versionName": "2.0.0",
   "versionCode": 33,
   "baseVersion": "1.9.17",
+  "validationIteration": 2,
   "summary": "Original responsive IPTV overhaul with TV/mobile guide shells, multi-playlist accounts, profiles and parental controls, device-language playback, recording/reminders, rolling timeshift, multiview, backup/restore, global search, picture-in-picture, and expanded customization."
 }
