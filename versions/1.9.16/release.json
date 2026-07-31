@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "versionCode": 31,
+  "versionName": "1.9.16",
+  "releaseDate": "2026-07-31",
+  "minimumAndroid": "5.0",
+  "sizeBytes": 56463367,
+  "sha256": "5b832bce26f95d29eea4129ff43a70aa357dbd5f916d6c4959ae75caed3edc3f",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.16/StreamDeck-IPTV-1.9.16.apk",
+  "notes": [
+    "Changes the B33R IPTV Xtream/Dispatcharr server to http://pro.b33r.top.",
+    "Updates Android cleartext-network permissions so the new HTTP hostname can be reached on Android and Fire TV.",
+    "Retains the compact responsive interface, top-only navigation, refreshed artwork, favorites, Continue Watching, and playback fallbacks from 1.9.15."
+  ],
+  "sourceUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/1.9.16/StreamDeck-IPTV-source-1.9.16.zip",
+  "sourceSha256": "47e692b45942b4c9195d89f8610b5c1cbe791b48ff1e530117aaee028376275e",
+  "signingCertificateSha256": "9948ad6eade4249478b09ab40b01073ae33182b1b1cd06cd576664a8f5b15839"
+}
