@@ -1,1 +1,8 @@
-__PLACEHOLDER__
+B33R IPTV 2.1.0 UI review patch
+encoding: concatenated base64(gzip(unified diff))
+chunks: ui-review.patch.gz.b64.00 through .03
+patchSha256: a2048dca71090a8e18451d208be48d3ea010d49634632f18ae04401a8b916e7a
+encodedSha256: c4c3889757e16ca03055a14d601df7504cc907d17740b138f683407cefebeb35
+baseVersion: 2.0.0
+candidateVersion: 2.1.0
+candidateVersionCode: 34
