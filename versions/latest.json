@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "versionCode": 33,
-  "versionName": "2.0.0",
-  "releaseDate": "2026-07-31",
+  "versionCode": 34,
+  "versionName": "2.1.0",
+  "releaseDate": "2026-08-01",
   "minimumAndroid": "5.0",
-  "sizeBytes": 56645070,
-  "sha256": "783bc1c6cc406f59927a3faa9f2ae2b3766b6854573885014b2cdd1a353ddad6",
-  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/2.0.0/StreamDeck-IPTV-2.0.0.apk",
+  "sizeBytes": 56686466,
+  "sha256": "0fb7d6fc108441a836df677886e409f052f9fb782ed8b5c7baea533f75bd2797",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/2.1.0/StreamDeck-IPTV-2.1.0.apk",
   "notes": [
-    "Introduces an original TV-first EPG grid and touch-first phone/tablet navigation shell.",
-    "Adds multiple encrypted playlists, provider-specific credentials, profiles, parental controls, channel organization, global search, favorites, and viewing history.",
-    "Adds scheduled recordings, reminders, rolling live-TV timeshift, multiview foundations, picture-in-picture, backup/restore, and expanded playback and appearance preferences.",
-    "Keeps automatic device-language audio/subtitle selection, manual track overrides, Media3 and VLC playback fallbacks, and the http://pro.b33r.top default server.",
-    "Uses original B33R code, branding, assets, and interaction design; no third-party paid feature or licensing bypass is included."
+    "Rebuilds the television guide around synchronized channel/program rows and deterministic D-pad focus behavior.",
+    "Introduces compact, medium, expanded, and television window policies while preserving the system font scale and accessible touch targets.",
+    "Replaces split mobile navigation with a single More panel and replaces the guide action dialog with a context-preserving side panel.",
+    "Debounces live previews and adds persistent per-channel player, buffering, decoder, subtitle, delay, source, and maximum-quality overrides.",
+    "Refines device-language audio selection and forced-subtitle Auto behavior while retaining manual audio and subtitle controls."
   ]
 }

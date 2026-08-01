@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "versionCode": 34,
+  "versionName": "2.1.0",
+  "releaseDate": "2026-08-01",
+  "minimumAndroid": "5.0",
+  "sizeBytes": 56686466,
+  "sha256": "0fb7d6fc108441a836df677886e409f052f9fb782ed8b5c7baea533f75bd2797",
+  "apkUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/2.1.0/StreamDeck-IPTV-2.1.0.apk",
+  "notes": [
+    "Rebuilds the television guide around synchronized channel/program rows and deterministic D-pad focus behavior.",
+    "Introduces compact, medium, expanded, and television window policies while preserving the system font scale and accessible touch targets.",
+    "Replaces split mobile navigation with a single More panel and replaces the guide action dialog with a context-preserving side panel.",
+    "Debounces live previews and adds persistent per-channel player, buffering, decoder, subtitle, delay, source, and maximum-quality overrides.",
+    "Refines device-language audio selection and forced-subtitle Auto behavior while retaining manual audio and subtitle controls."
+  ],
+  "sourceUrl": "https://github.com/uhuhuhuhuhuhuhuh/b33r/raw/main/versions/2.1.0/StreamDeck-IPTV-source-2.1.0.zip",
+  "sourceSha256": "f452f6bf47e2d12e2c4f9128abc74e5e845a5cddd7559712046b3c70da995b8d",
+  "signingCertificateSha256": "9948ad6eade4249478b09ab40b01073ae33182b1b1cd06cd576664a8f5b15839"
+}
