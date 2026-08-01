@@ -1,0 +1,90 @@
+name: Validate B33R IPTV 2.1.0
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'build-input/2.1.0/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Check out candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
+
+      - name: Install Android SDK packages
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+
+      - name: Reconstruct candidate source
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/b33r-2.1.0
+          unzip -q versions/2.0.0/StreamDeck-IPTV-source-2.0.0.zip -d /tmp/b33r-2.1.0
+          cat build-input/2.1.0/ui-review.patch.gz.b64.* > /tmp/ui-review.patch.gz.b64
+          printf '%s  %s\n' 'c4c3889757e16ca03055a14d601df7504cc907d17740b138f683407cefebeb35' /tmp/ui-review.patch.gz.b64 | sha256sum -c -
+          base64 -d /tmp/ui-review.patch.gz.b64 | gzip -d > /tmp/ui-review.patch
+          printf '%s  %s\n' 'a2048dca71090a8e18451d208be48d3ea010d49634632f18ae04401a8b916e7a' /tmp/ui-review.patch | sha256sum -c -
+          cd /tmp/b33r-2.1.0
+          patch -p1 --forward --batch < /tmp/ui-review.patch
+          test "$(grep -E 'versionCode = ' app/build.gradle.kts | awk '{print $3}')" = '34'
+          grep -q 'versionName = "2.1.0"' app/build.gradle.kts
+
+      - name: Create disposable validation key
+        run: |
+          keytool -genkeypair -v -keystore /tmp/b33r-validation.jks -storepass android -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 3650 -dname 'CN=B33R Validation,O=B33R,C=US'
+
+      - name: Run unit tests and build release APK
+        working-directory: /tmp/b33r-2.1.0
+        env:
+          B33R_RELEASE_STORE_FILE: /tmp/b33r-validation.jks
+          B33R_RELEASE_STORE_PASSWORD: android
+          B33R_RELEASE_KEY_ALIAS: androiddebugkey
+          B33R_RELEASE_KEY_PASSWORD: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon testReleaseUnitTest assembleRelease
+
+      - name: Verify candidate package
+        run: |
+          set -euo pipefail
+          APK=/tmp/b33r-2.1.0/app/build/outputs/apk/release/app-release.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$APK"
+          INFO=$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | head -1)
+          echo "$INFO"
+          echo "$INFO" | grep -q "package: name='com.streamdeck.iptv'"
+          echo "$INFO" | grep -q "versionCode='34'"
+          echo "$INFO" | grep -q "versionName='2.1.0'"
+          mkdir -p /tmp/export
+          cp "$APK" /tmp/export/B33R-IPTV-2.1.0-validation.apk
+          cd /tmp/b33r-2.1.0
+          zip -qr /tmp/export/B33R-IPTV-source-2.1.0.zip . -x 'app/build/*' '.gradle/*'
+          sha256sum /tmp/export/*
+
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: B33R-IPTV-2.1.0-validation
+          path: /tmp/export/*
+          retention-days: 5
