@@ -1,0 +1,4 @@
+releaseVersion=2.1.0
+versionCode=34
+validationRun=30684480429
+validatedCommit=a56718f6f68e2b208ff892ea41c507758c9d8160
