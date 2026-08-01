@@ -1,0 +1,2 @@
+repairVersion=2.1.0
+expectedApkSha256=0fb7d6fc108441a836df677886e409f052f9fb782ed8b5c7baea533f75bd2797
